@@ -4,7 +4,7 @@ from flask import Response, flash, jsonify, redirect, render_template, request, 
 
 from app import app, db
 from app.forms import LoginForm, RegisterForm
-from app.models import User
+from app.models import User, create_user
 
 
 @app.route("/")
@@ -31,6 +31,7 @@ def register() -> Response:
     form = RegisterForm()
     if form.validate_on_submit():
         flash(f"Register requested for user {form.username.data}")
+        create_user(form.username.data, form.email.data, form.password.data)
         return redirect(url_for("index"))
     return render_template("register.html", title="Sign In", form=form)
 
@@ -50,10 +51,7 @@ def get_user(user_id: int) -> Response:
 @app.route("/users", methods=["POST"])
 def post_users() -> Response:
     data = request.get_json()
-    salt = bcrypt.gensalt()
-    new_user = User(username=data["username"], email=data["email"], password_hash=bcrypt.hashpw(data["password"].encode(), salt))
-    db.session.add(new_user)
-    db.session.commit()
+    create_user(username=data["username"], email=data["email"], password=data["password"])
     return jsonify({"message": "User created successfully"}), 201
 
 

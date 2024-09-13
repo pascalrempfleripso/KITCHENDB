@@ -1,5 +1,6 @@
 from typing import Optional
 
+import bcrypt
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 
@@ -14,3 +15,12 @@ class User(db.Model):
 
     def __repr__(self):
         return f"<User {self.username}>"
+
+
+def create_user(username: str, email: str, password: str) -> User:
+    salt = bcrypt.gensalt()
+    new_user = User(username, email, bcrypt.hashpw(password.encode(), salt))
+    #    new_user = User(username=data["username"], email=data["email"], password_hash=bcrypt.hashpw(data["password"].encode(), salt))
+    db.session.add(new_user)
+    db.session.commit()
+    return new_user
