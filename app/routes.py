@@ -23,7 +23,7 @@ def login() -> Response:
     form = LoginForm()
     if form.validate_on_submit():
         user = db.session.scalar(sa.select(User).where(User.username == form.username.data))
-        if user is None or not bcrypt.checkpw(form.password.data.encode(), user.password_hash):
+        if user is None or not bcrypt.checkpw(form.password.data.encode(), user.password_hash.encode()):
             flash("Invalid username or password")
             return redirect(url_for("login"))
         login_user(user, remember=form.remember_me.data)
