@@ -1,9 +1,9 @@
 # app/routes.py
 from flask import flash, redirect, render_template, url_for
-from models import User
 
 from app import app
 from app.forms import LoginForm
+from app.models import User
 
 
 @app.route("/")
