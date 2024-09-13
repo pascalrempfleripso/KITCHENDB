@@ -3,11 +3,12 @@ from typing import Optional
 import bcrypt
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from flask_login import UserMixin
 
-from app import db
+from app import db, login
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
     email: so.Mapped[str] = so.mapped_column(sa.String(120), index=True, unique=True)
@@ -17,10 +18,14 @@ class User(db.Model):
         return f"<User {self.username}>"
 
 
+@login.user_loader
+def load_user(user_id: int) -> User:
+    return db.session.get(User, user_id)
+
+
 def create_user(username: str, email: str, password: str) -> User:
     salt = bcrypt.gensalt()
     new_user = User(username=username, email=email, password_hash=bcrypt.hashpw(password.encode(), salt))
-    #    new_user = User(username=data["username"], email=data["email"], password_hash=bcrypt.hashpw(data["password"].encode(), salt))
     db.session.add(new_user)
     db.session.commit()
     return new_user

@@ -1,6 +1,8 @@
 # app/routes.py
 import bcrypt
+import sqlalchemy as sa
 from flask import Response, flash, jsonify, redirect, render_template, request, url_for
+from flask_login import current_user, login_user, logout_user
 
 from app import app, db
 from app.forms import LoginForm, RegisterForm
@@ -20,7 +22,11 @@ def index() -> Response:
 def login() -> Response:
     form = LoginForm()
     if form.validate_on_submit():
-        flash(f"Login requested for user {form.username.data}, remember_me={form.remember_me.data}")
+        user = db.session.scalar(sa.select(User).where(User.username == form.username.data))
+        if user is None or not bcrypt.checkpw(form.password.data.encode(), user.password_hash):
+            flash("Invalid username or password")
+            return redirect(url_for("login"))
+        login_user(user, remember=form.remember_me.data)
         return redirect(url_for("index"))
     return render_template("login.html", title="Sign In", form=form)
 
