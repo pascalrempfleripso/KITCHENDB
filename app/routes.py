@@ -11,7 +11,7 @@ from app.models import User
 def index():
     user = {"username": "Pascal"}
     posts = [{"author": {"username": "Pascal"}, "body": "Offene Calzone"}]
-    return jsonify([{"id":user.id}for user in User.query.all()])
+    return jsonify([{"id":user.username}for user in User.query.all()])
     return render_template("index.html", title="Home", user=user, posts=posts)
 
 
