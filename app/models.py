@@ -19,7 +19,7 @@ class User(db.Model):
 
 def create_user(username: str, email: str, password: str) -> User:
     salt = bcrypt.gensalt()
-    new_user = User(username, email, bcrypt.hashpw(password.encode(), salt))
+    new_user = User(username=username, email=email, password_hash=bcrypt.hashpw(password.encode(), salt))
     #    new_user = User(username=data["username"], email=data["email"], password_hash=bcrypt.hashpw(data["password"].encode(), salt))
     db.session.add(new_user)
     db.session.commit()
