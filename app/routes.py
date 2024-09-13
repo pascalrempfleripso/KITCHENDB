@@ -3,7 +3,7 @@ import bcrypt
 from flask import Response, flash, jsonify, redirect, render_template, request, url_for
 
 from app import app, db
-from app.forms import LoginForm
+from app.forms import LoginForm, RegisterForm
 from app.models import User
 
 
@@ -23,6 +23,16 @@ def login() -> Response:
         flash(f"Login requested for user {form.username.data}, remember_me={form.remember_me.data}")
         return redirect(url_for("index"))
     return render_template("login.html", title="Sign In", form=form)
+
+
+# Register Form:
+@app.route("/register", methods=["GET", "POST"])
+def register() -> Response:
+    form = RegisterForm()
+    if form.validate_on_submit():
+        flash(f"Register requested for user {form.username.data}")
+        return redirect(url_for("index"))
+    return render_template("register.html", title="Sign In", form=form)
 
 
 # REST users
