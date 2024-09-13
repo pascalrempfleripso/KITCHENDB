@@ -2,7 +2,7 @@
 import bcrypt
 import sqlalchemy as sa
 from flask import Response, flash, jsonify, redirect, render_template, request, url_for
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, db
 from app.forms import LoginForm, RegisterForm
@@ -11,6 +11,7 @@ from app.models import User, create_user
 
 @app.route("/")
 @app.route("/index")
+@login_required
 def index() -> Response:
     user = {"username": "Pascal"}
     posts = [{"author": {"username": "Pascal"}, "body": "Offene Calzone"}]
