@@ -4,6 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Add New Recipe</title>
+    <script>
+        function addIngredient() {
+            const ingredientsDiv = document.getElementById('ingredients');
+            const newIngredient = ingredientsDiv.firstElementChild.cloneNode(true);
+            const totalIngredients = ingredientsDiv.childElementCount;
+            newIngredient.querySelectorAll('input, select').forEach(function (input) {
+                input.name = input.name.replace(/\d+/, totalIngredients);
+                input.id = input.id.replace(/\d+/, totalIngredients);
+                input.value = '';  // Reset input values
+            });
+            ingredientsDiv.appendChild(newIngredient);
+        }
+
+        function addInstruction() {
+            const instructionsDiv = document.getElementById('instructions');
+            const newInstruction = instructionsDiv.firstElementChild.cloneNode(true);
+            const totalInstructions = instructionsDiv.childElementCount;
+            newInstruction.querySelectorAll('textarea').forEach(function (textarea) {
+                textarea.name = textarea.name.replace(/\d+/, totalInstructions);
+                textarea.id = textarea.id.replace(/\d+/, totalInstructions);
+                textarea.value = '';  // Reset textarea values
+            });
+            instructionsDiv.appendChild(newInstruction);
+        }
+    </script>
 </head>
 <body>
     <h1>Add a New Recipe</h1>
@@ -27,36 +52,42 @@
         </div>
 
         <h2>Ingredients</h2>
-        {% for ingredient in form.ingredients %}
-        <div>
-            <label>Ingredient {{ loop.index }}</label>
-            {{ ingredient.name.label }} {{ ingredient.name }}
-            {% if ingredient.name.errors %}
-            <div class="error">{{ ingredient.name.errors[0] }}</div>
-            {% endif %}
+        <div id="ingredients">
+            {% for ingredient in form.ingredients %}
+            <div>
+                <label>Ingredient {{ loop.index }}</label>
+                {{ ingredient.name.label }} {{ ingredient.name }}
+                {% if ingredient.name.errors %}
+                <div class="error">{{ ingredient.name.errors[0] }}</div>
+                {% endif %}
 
-            {{ ingredient.amount.label }} {{ ingredient.amount }}
-            {% if ingredient.amount.errors %}
-            <div class="error">{{ ingredient.amount.errors[0] }}</div>
-            {% endif %}
+                {{ ingredient.amount.label }} {{ ingredient.amount }}
+                {% if ingredient.amount.errors %}
+                <div class="error">{{ ingredient.amount.errors[0] }}</div>
+                {% endif %}
 
-            {{ ingredient.unit.label }} {{ ingredient.unit }}  <!-- This will render as a dropdown -->
-            {% if ingredient.unit.errors %}
-            <div class="error">{{ ingredient.unit.errors[0] }}</div>
-            {% endif %}
+                {{ ingredient.unit.label }} {{ ingredient.unit }}
+                {% if ingredient.unit.errors %}
+                <div class="error">{{ ingredient.unit.errors[0] }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+        <button type="button" onclick="addIngredient()">Add More Ingredients</button>
 
         <h2>Instructions</h2>
-        {% for instruction in form.instructions %}
-        <div>
-            <label>Step {{ loop.index }}</label>
-            {{ instruction.task.label }} {{ instruction.task }}
-            {% if instruction.task.errors %}
-            <div class="error">{{ instruction.task.errors[0] }}</div>
-            {% endif %}
+        <div id="instructions">
+            {% for instruction in form.instructions %}
+            <div>
+                <label>Step {{ loop.index }}</label>
+                {{ instruction.task.label }} {{ instruction.task }}
+                {% if instruction.task.errors %}
+                <div class="error">{{ instruction.task.errors[0] }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+        <button type="button" onclick="addInstruction()">Add More Instructions</button>
 
         <div>
             {{ form.submit }}
