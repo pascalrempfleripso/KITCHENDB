@@ -12,13 +12,6 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-    <p>
-        {{ ingredient.name.label }}<br>
-        {{ ingredient.name(size=32) }}<br>
-        {% for error in ingredient.name.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
     <p>{{ form.submit() }}</p>
 </form>
 {% endblock %}
