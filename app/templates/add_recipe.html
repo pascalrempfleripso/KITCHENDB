@@ -2,12 +2,9 @@
 
 {% block content %}
 
-<h1>{% if form.is_edit %}Edit Recipe{% else %}Add a New Recipe{% endif %}</h1>
-
+<h1>Add a New Recipe</h1>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
-
-    <!-- Recipe Name Field -->
     <p>
         {{ form.recipename.label }}<br>
         {{ form.recipename }}<br>
@@ -15,16 +12,6 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-
-    <!-- Author Field -->
-    <p>
-        {{ form.author.label }}<br>
-        {{ form.author }}<br>
-        {% for error in form.author.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    
     <p>
         {{ form.ingredient1.label }}<br>
         {{ form.ingredient1 }}<br>
@@ -40,13 +27,19 @@
         {% endfor %}
     </p>
     <p>
+        {{ form.ingredient1_unit.label }}<br>
+        {{ form.ingredient1_unit }}<br>
+        {% for error in form.ingredient1_unit.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
         {{ form.task1.label }}<br>
         {{ form.task1 }}<br>
         {% for error in form.task1.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-    <!-- Submit Button -->
     <p>{{ form.submit() }}</p>
 </form>
 

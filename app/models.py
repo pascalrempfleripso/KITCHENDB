@@ -22,10 +22,9 @@ class User(UserMixin, db.Model):
 class Recipe(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(200), index=True)
-    author_id: so.Mapped[int] = so.mapped_column(ForeignKey("user.id"), index=True)
+    author = so.Mapped[str] = so.mapped_column(sa.String(64), index=True)
 
     # Relationships
-    author = so.relationship("User", backref="recipes")
     ingredients = so.relationship("Ingredients", backref="recipe", lazy="dynamic")
     instructions = so.relationship("Instruction", backref="recipe", lazy="dynamic")
 

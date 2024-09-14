@@ -8,7 +8,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, db
 from app.forms import LoginForm, RecipeForm, RegisterForm
-from app.models import User, create_user
+from app.models import Ingredients, Instruction, Recipe, User, create_user
 
 
 @app.route("/")
@@ -86,8 +86,17 @@ def patch_user(user_id: int) -> Response:
 
 # ADD A NEW RECIPE
 @app.route("/add_recipe", methods=["GET", "POST"])
+@login_required
 def add_recipe() -> Response:
     form = RecipeForm()
     if form.validate_on_submit():
+        recipe = Recipe(name=form.recipename.data, author=current_user.username)
+        db.session.add(recipe)
+        db.session.flush()
+        ingredients = Ingredients(recipe_id=recipe.id, name=form.ingredient1.data, amount=form.ingredient1_amount.data, unit=form.ingredient1_unit.data)
+        db.session.add(ingredients)
+        task = Instruction(recipe_id=recipe.id, task=form.task1.data)
+        db.session.add(task)
+        db.session.commit()
         return redirect(url_for("login"))
     return render_template("add_recipe.html", form=form)
