@@ -14,8 +14,28 @@ class User(UserMixin, db.Model):
     email: so.Mapped[str] = so.mapped_column(sa.String(120), index=True, unique=True)
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<User {self.username}>"
+
+
+class Recipe(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(200), index=True)
+    author: so.Mapped[str] = so.mapped_column(sa.String(64), index=True)
+
+
+class Ingredients(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    recipe_id: so.Mapped[int] = so.mapped_column(index=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(100), index=True)
+    amount: so.Mapped[int] = so.mapped_column(sa.Integer(10), index=True)
+    unit: so.Mapped[str] = so.mapped_column(sa.String(20), index=True)
+
+
+class Instruction(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    recipe_id: so.Mapped[int] = so.mapped_column(index=True)
+    tasks: so.Mapped[str] = so.mapped_column(sa.String(5000), index=True)
 
 
 @login.user_loader

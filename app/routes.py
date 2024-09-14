@@ -22,6 +22,8 @@ def index() -> Response:
 # Login Form:
 @app.route("/login", methods=["GET", "POST"])
 def login() -> Response:
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
     form = LoginForm()
     if form.validate_on_submit():
         user = db.session.scalar(sa.select(User).where(User.username == form.username.data))
@@ -37,7 +39,7 @@ def login() -> Response:
 
 
 @app.route("/logout")
-def logout():
+def logout() -> Response:
     logout_user()
     return redirect(url_for("index"))
 
