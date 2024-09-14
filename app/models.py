@@ -28,7 +28,7 @@ class Ingredients(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     recipe_id: so.Mapped[int] = so.mapped_column(index=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(100), index=True)
-    amount: so.Mapped[int] = so.mapped_column(sa.Integer(10), index=True)
+    amount: so.Mapped[int] = so.mapped_column(index=True)
     unit: so.Mapped[str] = so.mapped_column(sa.String(20), index=True)
 
 
