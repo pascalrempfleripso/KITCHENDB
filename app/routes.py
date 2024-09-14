@@ -11,7 +11,6 @@ from app.models import User, create_user
 
 @app.route("/")
 @app.route("/index")
-@login_required
 def index() -> Response:
     user = {"username": "Pascal"}
     posts = [{"author": {"username": "Pascal"}, "body": "Offene Calzone"}]
@@ -41,6 +40,14 @@ def register() -> Response:
         create_user(form.username.data, form.email.data, form.password.data)
         return redirect(url_for("index"))
     return render_template("register.html", title="Sign In", form=form)
+
+
+@login_required
+@app.route("/dashboard")
+def dashboard() -> Response:
+    user = {"username": "Pascal"}
+    posts = [{"author": {"username": "Pascal"}, "body": "Offene Calzone"}]
+    return render_template("dashboard.html", title="Home", user=user, posts=posts)
 
 
 # REST users
