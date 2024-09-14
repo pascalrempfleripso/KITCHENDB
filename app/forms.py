@@ -24,11 +24,11 @@ class IngredientForm(FlaskForm):
     unit = SelectField(
         "Unit",
         choices=[
+            ("mg", "milligrams (mg)"),
             ("g", "grams (g)"),
             ("kg", "kilograms (kg)"),
             ("ml", "milliliters (ml)"),
             ("l", "liters (l)"),
-            ("mg", "milligrams (mg)"),
         ],
         validators=[DataRequired()],
     )

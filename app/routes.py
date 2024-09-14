@@ -113,4 +113,4 @@ def add_recipe() -> Response:
         flash("Recipe added successfully!", "success")
         return redirect(url_for("add_recipe"))
 
-    return render_template("add_recipe.html", form=form)
+    return render_template("add_recipe.html", title="Add Recipe", form=form)

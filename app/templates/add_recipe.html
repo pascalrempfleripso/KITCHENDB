@@ -2,115 +2,23 @@
 
 {% block content %}
 
-<h1>{% if form.is_edit %}Edit Recipe{% else %}Add a New Recipe{% endif %}</h1>
-
+<h1>Add a new Recipe</h1>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
-
-    <!-- Recipe Name Field -->
     <p>
         {{ form.name.label }}<br>
-        {{ form.name }}<br>
+        {{ form.name(size=32) }}<br>
         {% for error in form.name.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-
-    <!-- Author Field -->
     <p>
-        {{ form.author.label }}<br>
-        {{ form.author }}<br>
-        {% for error in form.author.errors %}
+        {{ form.ingredients.name.label }}<br>
+        {{ form.ingredients.name(size=32) }}<br>
+        {% for error in form.ingredients.name.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-
-    <h2>Ingredients</h2>
-
-    <!-- Ingredients List -->
-    <div id="ingredients">
-        <p>
-            <!-- Ingredient Name Input -->
-            {{ form.ingredient.name.label }}<br>
-            {{ form.ingredient.name }}<br>
-            {% for error in form.ingredient.name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            <!-- Ingredient Amount Input -->
-            {{ form.ingredient.amount.label }}<br>
-            {{ form.ingredient.amount }}<br>
-            {% for error in form.ingredient.amount.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            <!-- Ingredient Unit Dropdown -->
-            {{ form.ingredient.unit.label }}<br>
-            {{ form.ingredient.unit() }}<br>
-            {% for error in form.ingredient.unit.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-    </div>
-    
-    <!-- Add More Ingredients Button -->
-    <p>
-        <button type="button" onclick="addIngredient()">Add More Ingredients</button>
-    </p>
-
-    <h2>Instructions</h2>
-
-    <!-- Instructions List -->
-    <div id="instructions">
-        {% for instruction in form.instructions %}
-        <div>
-            <p>
-                {{ instruction.task.label }}<br>
-                {{ instruction.task }}<br>
-                {% for error in instruction.task.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-        </div>
-        {% endfor %}
-    </div>
-    
-    <!-- Add More Instructions Button -->
-    <p>
-        <button type="button" onclick="addInstruction()">Add More Instructions</button>
-    </p>
-
-    <!-- Submit Button -->
     <p>{{ form.submit() }}</p>
 </form>
-
-<!-- JavaScript to Add Dynamic Fields -->
-<script>
-    function addIngredient() {
-        const ingredientsDiv = document.getElementById('ingredients');
-        const newIngredient = ingredientsDiv.firstElementChild.cloneNode(true);
-        const totalIngredients = ingredientsDiv.childElementCount;
-        newIngredient.querySelectorAll('input, select').forEach(function (input) {
-            input.name = input.name.replace(/\d+/, totalIngredients);
-            input.id = input.id.replace(/\d+/, totalIngredients);
-            input.value = '';  // Reset input values
-        });
-        ingredientsDiv.appendChild(newIngredient);
-    }
-
-    function addInstruction() {
-        const instructionsDiv = document.getElementById('instructions');
-        const newInstruction = instructionsDiv.firstElementChild.cloneNode(true);
-        const totalInstructions = instructionsDiv.childElementCount;
-        newInstruction.querySelectorAll('textarea').forEach(function (textarea) {
-            textarea.name = textarea.name.replace(/\d+/, totalInstructions);
-            textarea.id = textarea.id.replace(/\d+/, totalInstructions);
-            textarea.value = '';  // Reset textarea values
-        });
-        instructionsDiv.appendChild(newInstruction);
-    }
-</script>
-
 {% endblock %}
