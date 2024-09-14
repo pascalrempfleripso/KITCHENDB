@@ -36,29 +36,38 @@ def login() -> Response:
     return render_template("login.html", title="Sign In", form=form)
 
 
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("index"))
+
+
 # Register Form:
 @app.route("/register", methods=["GET", "POST"])
 def register() -> Response:
     form = RegisterForm()
     if form.validate_on_submit():
-        flash(f"Register requested for user {form.username.data}")
         create_user(form.username.data, form.email.data, form.password.data)
-        return redirect(url_for("index"))
-    return render_template("register.html", title="Sign In", form=form)
+        flash(f"Congratulations {form.username.data}, you are now a registered User!")
+        return redirect(url_for("login"))
+    return render_template("register.html", title="Register", form=form)
 
 
 # REST users
+# GET ALL USERS
 @app.route("/users", methods=["GET"])
 def get_users() -> Response:
     return jsonify([{"id": user.id, "username": user.username, "email": user.email} for user in User.query.all()])
 
 
+# GET SPECIFIC USER
 @app.route("/users/<int:user_id>", methods=["GET"])
 def get_user(user_id: int) -> Response:
     user = User.query.get_or_404(user_id)
     return jsonify({"id": user.id, "username": user.username, "email": user.email})
 
 
+# POST/CREATE NEW USER USING REST-API
 @app.route("/users", methods=["POST"])
 def post_users() -> Response:
     data = request.get_json()
@@ -66,6 +75,7 @@ def post_users() -> Response:
     return jsonify({"message": "User created successfully"}), 201
 
 
+# PATCH/MODIFY USER USING REST-API
 @app.route("/users/<int:user_id>", methods=["PATCH"])
 def patch_user(user_id: int) -> Response:
     user = User.query.get_or_404(user_id)
