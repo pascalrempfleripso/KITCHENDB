@@ -2,7 +2,7 @@ Single-database configuration for Flask.
 
 
 --- How to Modify MySQL DB: ---
-set MYSQL_URL='mysql+pymysql://username:password@host/db_name'
+set MYSQL_URL=mysql://username:password@host/db_name
 flask db migrate -m "description"
 flask db upgrade
 -------------------------------
