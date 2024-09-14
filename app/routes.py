@@ -1,4 +1,6 @@
 # app/routes.py
+from urllib.parse import urlsplit
+
 import bcrypt
 import sqlalchemy as sa
 from flask import Response, flash, jsonify, redirect, render_template, request, url_for
@@ -11,6 +13,7 @@ from app.models import User, create_user
 
 @app.route("/")
 @app.route("/index")
+@login_required
 def index() -> Response:
     user = {"username": "Pascal"}
     posts = [{"author": {"username": "Pascal"}, "body": "Offene Calzone"}]
@@ -27,7 +30,11 @@ def login() -> Response:
             flash("Invalid username or password")
             return redirect(url_for("login"))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for("index"))
+        next_page = request.args.get("next")
+        if not next_page or urlsplit(next_page).netloc != "":
+            next_page = url_for("index")
+        return redirect(next_page)
+        # return redirect(url_for("index"))
     return render_template("login.html", title="Sign In", form=form)
 
 
@@ -40,14 +47,6 @@ def register() -> Response:
         create_user(form.username.data, form.email.data, form.password.data)
         return redirect(url_for("index"))
     return render_template("register.html", title="Sign In", form=form)
-
-
-@login_required
-@app.route("/dashboard")
-def dashboard() -> Response:
-    user = {"username": "Pascal"}
-    posts = [{"author": {"username": "Pascal"}, "body": "Offene Calzone"}]
-    return render_template("dashboard.html", title="Dashboard", user=user, posts=posts)
 
 
 # REST users
