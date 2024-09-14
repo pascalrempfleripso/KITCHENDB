@@ -1,97 +1,117 @@
-<!-- templates/add_recipe.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add New Recipe</title>
-    <script>
-        function addIngredient() {
-            const ingredientsDiv = document.getElementById('ingredients');
-            const newIngredient = ingredientsDiv.firstElementChild.cloneNode(true);
-            const totalIngredients = ingredientsDiv.childElementCount;
-            newIngredient.querySelectorAll('input, select').forEach(function (input) {
-                input.name = input.name.replace(/\d+/, totalIngredients);
-                input.id = input.id.replace(/\d+/, totalIngredients);
-                input.value = '';  // Reset input values
-            });
-            ingredientsDiv.appendChild(newIngredient);
-        }
+{% extends "base.html" %}
 
-        function addInstruction() {
-            const instructionsDiv = document.getElementById('instructions');
-            const newInstruction = instructionsDiv.firstElementChild.cloneNode(true);
-            const totalInstructions = instructionsDiv.childElementCount;
-            newInstruction.querySelectorAll('textarea').forEach(function (textarea) {
-                textarea.name = textarea.name.replace(/\d+/, totalInstructions);
-                textarea.id = textarea.id.replace(/\d+/, totalInstructions);
-                textarea.value = '';  // Reset textarea values
-            });
-            instructionsDiv.appendChild(newInstruction);
-        }
-    </script>
-</head>
-<body>
-    <h1>Add a New Recipe</h1>
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
+{% block content %}
 
+<h1>Add a New Recipe</h1>
+
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+
+    <!-- Recipe Name Field -->
+    <p>
+        {{ form.name.label }}<br>
+        {{ form.name(size=64) }}<br>
+        {% for error in form.name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <!-- Author Field -->
+    <p>
+        {{ form.author.label }}<br>
+        {{ form.author(size=64) }}<br>
+        {% for error in form.author.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <h2>Ingredients</h2>
+
+    <!-- Ingredients List -->
+    <div id="ingredients">
+        {% for ingredient in form.ingredients %}
         <div>
-            <label for="name">Recipe Name</label>
-            {{ form.name.label }} {{ form.name }}
-            {% if form.name.errors %}
-            <div class="error">{{ form.name.errors[0] }}</div>
-            {% endif %}
+            <p>
+                {{ ingredient.name.label }}<br>
+                {{ ingredient.name(size=64) }}<br>
+                {% for error in ingredient.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ ingredient.amount.label }}<br>
+                {{ ingredient.amount(size=10) }}<br>
+                {% for error in ingredient.amount.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ ingredient.unit.label }}<br>
+                {{ ingredient.unit() }}<br>
+                {% for error in ingredient.unit.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
         </div>
-
-        <div>
-            <label for="author">Author</label>
-            {{ form.author.label }} {{ form.author }}
-            {% if form.author.errors %}
-            <div class="error">{{ form.author.errors[0] }}</div>
-            {% endif %}
-        </div>
-
-        <h2>Ingredients</h2>
-        <div id="ingredients">
-            {% for ingredient in form.ingredients %}
-            <div>
-                <label>Ingredient {{ loop.index }}</label>
-                {{ ingredient.name.label }} {{ ingredient.name }}
-                {% if ingredient.name.errors %}
-                <div class="error">{{ ingredient.name.errors[0] }}</div>
-                {% endif %}
-
-                {{ ingredient.amount.label }} {{ ingredient.amount }}
-                {% if ingredient.amount.errors %}
-                <div class="error">{{ ingredient.amount.errors[0] }}</div>
-                {% endif %}
-
-                {{ ingredient.unit.label }} {{ ingredient.unit }}
-                {% if ingredient.unit.errors %}
-                <div class="error">{{ ingredient.unit.errors[0] }}</div>
-                {% endif %}
-            </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Add More Ingredients Button -->
+    <p>
         <button type="button" onclick="addIngredient()">Add More Ingredients</button>
+    </p>
 
-        <h2>Instructions</h2>
-        <div id="instructions">
-            {% for instruction in form.instructions %}
-            <div>
-                <label>Step {{ loop.index }}</label>
-                {{ instruction.task.label }} {{ instruction.task }}
-                {% if instruction.task.errors %}
-                <div class="error">{{ instruction.task.errors[0] }}</div>
-                {% endif %}
-            </div>
-            {% endfor %}
-        </div>
-        <button type="button" onclick="addInstruction()">Add More Instructions</button>
+    <h2>Instructions</h2>
 
+    <!-- Instructions List -->
+    <div id="instructions">
+        {% for instruction in form.instructions %}
         <div>
-            {{ form.submit }}
+            <p>
+                {{ instruction.task.label }}<br>
+                {{ instruction.task(rows=3, cols=64) }}<br>
+                {% for error in instruction.task.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
         </div>
-    </form>
-</body>
-</html>
+        {% endfor %}
+    </div>
+    
+    <!-- Add More Instructions Button -->
+    <p>
+        <button type="button" onclick="addInstruction()">Add More Instructions</button>
+    </p>
+
+    <!-- Submit Button -->
+    <p>{{ form.submit() }}</p>
+</form>
+
+<!-- JavaScript to Add Dynamic Fields -->
+<script>
+    function addIngredient() {
+        const ingredientsDiv = document.getElementById('ingredients');
+        const newIngredient = ingredientsDiv.firstElementChild.cloneNode(true);
+        const totalIngredients = ingredientsDiv.childElementCount;
+        newIngredient.querySelectorAll('input, select').forEach(function (input) {
+            input.name = input.name.replace(/\d+/, totalIngredients);
+            input.id = input.id.replace(/\d+/, totalIngredients);
+            input.value = '';  // Reset input values
+        });
+        ingredientsDiv.appendChild(newIngredient);
+    }
+
+    function addInstruction() {
+        const instructionsDiv = document.getElementById('instructions');
+        const newInstruction = instructionsDiv.firstElementChild.cloneNode(true);
+        const totalInstructions = instructionsDiv.childElementCount;
+        newInstruction.querySelectorAll('textarea').forEach(function (textarea) {
+            textarea.name = textarea.name.replace(/\d+/, totalInstructions);
+            textarea.id = textarea.id.replace(/\d+/, totalInstructions);
+            textarea.value = '';  // Reset textarea values
+        });
+        instructionsDiv.appendChild(newInstruction);
+    }
+</script>
+
+{% endblock %}
