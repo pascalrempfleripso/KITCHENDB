@@ -2,19 +2,35 @@
 
 {% block content %}
 
-<h1>Add a new Recipe</h1>
+<h1>{% if form.is_edit %}Edit Recipe{% else %}Add a New Recipe{% endif %}</h1>
+
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
+
+    <!-- Recipe Name Field -->
     <p>
         {{ form.name.label }}<br>
-        {{ form.name(size=32) }}<br>
+        {{ form.name }}<br>
         {% for error in form.name.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
+
+    <!-- Author Field -->
+    <p>
+        {{ form.author.label }}<br>
+        {{ form.author }}<br>
+        {% for error in form.author.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+
+    <h2>Ingredients</h2>
+
+    <!-- Fixed Number of Ingredient Fields -->
     <div id="ingredients">
         {% for ingredient in form.ingredients %}
-        <div class="ingredient-item" id="ingredient-{{ loop.index }}">
+        <div class="ingredient-item">
             <p>
                 <!-- Ingredient Name Input -->
                 {{ ingredient.name.label }}<br>
@@ -42,6 +58,26 @@
         </div>
         {% endfor %}
     </div>
+
+    <h2>Instructions</h2>
+
+    <!-- Fixed Number of Instruction Fields -->
+    <div id="instructions">
+        {% for instruction in form.instructions %}
+        <div>
+            <p>
+                {{ instruction.task.label }}<br>
+                {{ instruction.task }}<br>
+                {% for error in instruction.task.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Submit Button -->
     <p>{{ form.submit() }}</p>
 </form>
+
 {% endblock %}
