@@ -91,16 +91,14 @@ def add_recipe() -> Response:
 
     if form.validate_on_submit():
         # Create a new recipe
-        recipe = Recipe(name=form.name.data, author=form.author.data)
+        recipe = Recipe(name=form.name.data, author=current_user.username)
 
         # Add the recipe to the session
         db.session.add(recipe)
         db.session.flush()  # To get the recipe.id before committing
 
-        # Loop through the ingredients and add them to the session
-        for ingredient_form in form.ingredients:
-            ingredient = Ingredients(recipe_id=recipe.id, name=ingredient_form.name.data, amount=ingredient_form.amount.data, unit=ingredient_form.unit.data)
-            db.session.add(ingredient)
+        ingredient = Ingredients(recipe_id=recipe.id, name=form.ingredient.name.data, amount=form.ingredient.amount.data, unit=form.ingredient.unit.data)
+        db.session.add(ingredient)
 
         # Loop through the instructions and add them to the session
         for instruction_form in form.instructions:

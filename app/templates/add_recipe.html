@@ -13,9 +13,9 @@
         {% endfor %}
     </p>
     <p>
-        {{ ingredient_form.name.label }}<br>
-        {{ ingredient_form.name(size=32) }}<br>
-        {% for error in ingredient_form.name.errors %}
+        {{ form.ingredient.name.label }}<br>
+        {{ form.ingredient.name(size=32) }}<br>
+        {% for error in form.ingredient.name.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
