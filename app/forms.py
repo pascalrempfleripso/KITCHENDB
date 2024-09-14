@@ -23,6 +23,17 @@ class RecipeForm(FlaskForm):
     author = StringField("Author", validators=[DataRequired()])
     ingredient1 = StringField("1.Ingredient", validators=[DataRequired()])
     ingredient1_amount = IntegerField("1.Ingredient Amount", validators=[DataRequired()])
+    ingredient1_unit = SelectField(
+        "Unit",
+        choices=[
+            ("mg", "mg"),
+            ("g", "g"),
+            ("kg", "kg"),
+            ("ml", "ml"),
+            ("l", "l"),
+        ],
+        validators=[DataRequired()],
+    )
     ingredient2 = StringField("2.Ingredient")
     ingredient2_amount = IntegerField("2.Ingredient Amount")
     ingredient3 = StringField("3.Ingredient")
