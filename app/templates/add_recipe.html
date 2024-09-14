@@ -12,13 +12,36 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-    <p>
-        {{ form.ingredients.name.label }}<br>
-        {{ form.ingredients.name(size=32) }}<br>
-        {% for error in form.ingredients.name.errors %}
-        <span style="color: red;">[{{ error }}]</span>
+    <div id="ingredients">
+        {% for ingredient in form.ingredients %}
+        <div class="ingredient-item" id="ingredient-{{ loop.index }}">
+            <p>
+                <!-- Ingredient Name Input -->
+                {{ ingredient.name.label }}<br>
+                {{ ingredient.name }}<br>
+                {% for error in ingredient.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                <!-- Ingredient Amount Input -->
+                {{ ingredient.amount.label }}<br>
+                {{ ingredient.amount }}<br>
+                {% for error in ingredient.amount.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                <!-- Ingredient Unit Dropdown -->
+                {{ ingredient.unit.label }}<br>
+                {{ ingredient.unit() }}<br>
+                {% for error in ingredient.unit.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+        </div>
         {% endfor %}
-    </p>
+    </div>
     <p>{{ form.submit() }}</p>
 </form>
 {% endblock %}

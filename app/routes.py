@@ -7,7 +7,7 @@ from flask import Response, flash, jsonify, redirect, render_template, request, 
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, db
-from app.forms import LoginForm, RecipeForm, RegisterForm
+from app.forms import IngredientForm, LoginForm, RecipeForm, RegisterForm
 from app.models import Ingredients, Instruction, Recipe, User, create_user
 
 
@@ -86,29 +86,31 @@ def patch_user(user_id: int) -> Response:
 
 # ADD A NEW RECIPE
 @app.route("/add_recipe", methods=["GET", "POST"])
-def add_recipe() -> Response:
+def add_recipe():
     form = RecipeForm()
 
     if form.validate_on_submit():
-        # Create a new recipe
-        recipe = Recipe(name=form.name.data, author=current_user.username)
-
-        # Add the recipe to the session
+        # Create a new Recipe instance
+        recipe = Recipe(name=form.name.data, author=form.author.data)
         db.session.add(recipe)
-        db.session.flush()  # To get the recipe.id before committing
-
-        ingredient = Ingredients(recipe_id=recipe.id, name=form.ingredient.name.data, amount=form.ingredient.amount.data, unit=form.ingredient.unit.data)
-        db.session.add(ingredient)
-
-        # Loop through the instructions and add them to the session
-        for instruction_form in form.instructions:
-            instruction = Instruction(recipe_id=recipe.id, tasks=instruction_form.task.data)
-            db.session.add(instruction)
-
-        # Commit the session to save the recipe, ingredients, and instructions
         db.session.commit()
 
-        flash("Recipe added successfully!", "success")
-        return redirect(url_for("add_recipe"))
+        # Add ingredients
+        for ingredient_form in form.ingredients:
+            if ingredient_form.name.data and ingredient_form.amount.data and ingredient_form.unit.data:
+                ingredient = Ingredients(
+                    recipe_id=recipe.id, name=ingredient_form.name.data, amount=ingredient_form.amount.data, unit=ingredient_form.unit.data
+                )
+                db.session.add(ingredient)
 
-    return render_template("add_recipe.html", title="Add Recipe", form=form)
+        # Add instructions
+        for instruction_form in form.instructions:
+            if instruction_form.task.data:
+                instruction = Instruction(recipe_id=recipe.id, tasks=instruction_form.task.data)
+                db.session.add(instruction)
+
+        db.session.commit()
+
+        return redirect(url_for("success"))  # Redirect to a success page or another view
+
+    return render_template("add_recipe.html", form=form)
