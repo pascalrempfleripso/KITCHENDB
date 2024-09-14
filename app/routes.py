@@ -7,8 +7,8 @@ from flask import Response, flash, jsonify, redirect, render_template, request, 
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, db
-from app.forms import IngredientForm, LoginForm, RecipeForm, RegisterForm
-from app.models import Ingredients, Instruction, Recipe, User, create_user
+from app.forms import LoginForm, RecipeForm, RegisterForm
+from app.models import User, create_user
 
 
 @app.route("/")
