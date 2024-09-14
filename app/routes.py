@@ -15,9 +15,8 @@ from app.models import User, create_user
 @app.route("/index")
 @login_required
 def index() -> Response:
-    user = {"username": "Pascal"}
     posts = [{"author": {"username": "Pascal"}, "body": "Offene Calzone"}]
-    return render_template("index.html", title="Home", user=user, posts=posts)
+    return render_template("index.html", title="Home", posts=posts)
 
 
 # Login Form:
@@ -34,7 +33,6 @@ def login() -> Response:
         if not next_page or urlsplit(next_page).netloc != "":
             next_page = url_for("index")
         return redirect(next_page)
-        # return redirect(url_for("index"))
     return render_template("login.html", title="Sign In", form=form)
 
 
