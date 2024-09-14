@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, FieldList, FormField, PasswordField, StringField, SubmitField, TextAreaField, ValidationError
+from wtforms import BooleanField, FieldList, FormField, PasswordField, SelectField, StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
@@ -18,18 +18,20 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Register")
 
 
-# validator for metric units
-def validate_metric_unit(form, field) -> None:
-    valid_metric_units = ["g", "kg", "ml", "l", "mg"]
-    if field.data not in valid_metric_units:
-        msg = f"'{field.data}' is not a valid metric unit. Please use one of: {', '.join(valid_metric_units)}"
-        raise ValidationError(msg)
-
-
 class IngredientForm(FlaskForm):
     name = StringField("Ingredient Name", validators=[DataRequired(), Length(max=100)])
     amount = StringField("Amount", validators=[DataRequired()])
-    unit = StringField("Unit", validators=[DataRequired(), Length(max=20), validate_metric_unit])
+    unit = SelectField(
+        "Unit",
+        choices=[
+            ("g", "grams (g)"),
+            ("kg", "kilograms (kg)"),
+            ("ml", "milliliters (ml)"),
+            ("l", "liters (l)"),
+            ("mg", "milligrams (mg)"),
+        ],
+        validators=[DataRequired()],
+    )
 
 
 class InstructionForm(FlaskForm):

@@ -13,11 +13,17 @@
         <div>
             <label for="name">Recipe Name</label>
             {{ form.name.label }} {{ form.name }}
+            {% if form.name.errors %}
+            <div class="error">{{ form.name.errors[0] }}</div>
+            {% endif %}
         </div>
 
         <div>
             <label for="author">Author</label>
             {{ form.author.label }} {{ form.author }}
+            {% if form.author.errors %}
+            <div class="error">{{ form.author.errors[0] }}</div>
+            {% endif %}
         </div>
 
         <h2>Ingredients</h2>
@@ -34,7 +40,7 @@
             <div class="error">{{ ingredient.amount.errors[0] }}</div>
             {% endif %}
 
-            {{ ingredient.unit.label }} {{ ingredient.unit }}
+            {{ ingredient.unit.label }} {{ ingredient.unit }}  <!-- This will render as a dropdown -->
             {% if ingredient.unit.errors %}
             <div class="error">{{ ingredient.unit.errors[0] }}</div>
             {% endif %}
@@ -46,6 +52,9 @@
         <div>
             <label>Step {{ loop.index }}</label>
             {{ instruction.task.label }} {{ instruction.task }}
+            {% if instruction.task.errors %}
+            <div class="error">{{ instruction.task.errors[0] }}</div>
+            {% endif %}
         </div>
         {% endfor %}
 

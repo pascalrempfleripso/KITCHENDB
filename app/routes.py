@@ -86,7 +86,7 @@ def patch_user(user_id: int) -> Response:
 
 # ADD A NEW RECIPE
 @app.route("/add_recipe", methods=["GET", "POST"])
-def add_recipe():
+def add_recipe() -> Response:
     form = RecipeForm()
 
     if form.validate_on_submit():
