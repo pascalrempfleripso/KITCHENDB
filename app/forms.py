@@ -31,6 +31,7 @@ class RecipeForm(FlaskForm):
             ("kg", "kg"),
             ("ml", "ml"),
             ("l", "l"),
+            ("stk", "stk"),
         ],
         validators=[DataRequired()],
     )
