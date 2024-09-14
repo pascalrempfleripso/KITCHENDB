@@ -1,0 +1,57 @@
+<!-- templates/add_recipe.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Recipe</title>
+</head>
+<body>
+    <h1>Add a New Recipe</h1>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+
+        <div>
+            <label for="name">Recipe Name</label>
+            {{ form.name.label }} {{ form.name }}
+        </div>
+
+        <div>
+            <label for="author">Author</label>
+            {{ form.author.label }} {{ form.author }}
+        </div>
+
+        <h2>Ingredients</h2>
+        {% for ingredient in form.ingredients %}
+        <div>
+            <label>Ingredient {{ loop.index }}</label>
+            {{ ingredient.name.label }} {{ ingredient.name }}
+            {% if ingredient.name.errors %}
+            <div class="error">{{ ingredient.name.errors[0] }}</div>
+            {% endif %}
+
+            {{ ingredient.amount.label }} {{ ingredient.amount }}
+            {% if ingredient.amount.errors %}
+            <div class="error">{{ ingredient.amount.errors[0] }}</div>
+            {% endif %}
+
+            {{ ingredient.unit.label }} {{ ingredient.unit }}
+            {% if ingredient.unit.errors %}
+            <div class="error">{{ ingredient.unit.errors[0] }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <h2>Instructions</h2>
+        {% for instruction in form.instructions %}
+        <div>
+            <label>Step {{ loop.index }}</label>
+            {{ instruction.task.label }} {{ instruction.task }}
+        </div>
+        {% endfor %}
+
+        <div>
+            {{ form.submit }}
+        </div>
+    </form>
+</body>
+</html>

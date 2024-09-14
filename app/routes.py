@@ -7,8 +7,8 @@ from flask import Response, flash, jsonify, redirect, render_template, request, 
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, db
-from app.forms import LoginForm, RegisterForm
-from app.models import User, create_user
+from app.forms import LoginForm, RecipeForm, RegisterForm
+from app.models import Ingredients, Instruction, Recipe, User, create_user
 
 
 @app.route("/")
@@ -82,3 +82,35 @@ def post_users() -> Response:
 def patch_user(user_id: int) -> Response:
     user = User.query.get_or_404(user_id)
     return jsonify({"id": user.id, "username": user.username, "email": user.email})
+
+
+# ADD A NEW RECIPE
+@app.route("/add_recipe", methods=["GET", "POST"])
+def add_recipe():
+    form = RecipeForm()
+
+    if form.validate_on_submit():
+        # Create a new recipe
+        recipe = Recipe(name=form.name.data, author=form.author.data)
+
+        # Add the recipe to the session
+        db.session.add(recipe)
+        db.session.flush()  # To get the recipe.id before committing
+
+        # Loop through the ingredients and add them to the session
+        for ingredient_form in form.ingredients:
+            ingredient = Ingredients(recipe_id=recipe.id, name=ingredient_form.name.data, amount=ingredient_form.amount.data, unit=ingredient_form.unit.data)
+            db.session.add(ingredient)
+
+        # Loop through the instructions and add them to the session
+        for instruction_form in form.instructions:
+            instruction = Instruction(recipe_id=recipe.id, tasks=instruction_form.task.data)
+            db.session.add(instruction)
+
+        # Commit the session to save the recipe, ingredients, and instructions
+        db.session.commit()
+
+        flash("Recipe added successfully!", "success")
+        return redirect(url_for("add_recipe"))
+
+    return render_template("add_recipe.html", form=form)
