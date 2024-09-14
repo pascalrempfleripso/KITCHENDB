@@ -90,7 +90,7 @@ def patch_user(user_id: int) -> Response:
 def add_recipe() -> Response:
     form = RecipeForm()
     if form.validate_on_submit():
-        recipe = Recipe(name=form.recipename.data, author=current_user.username)
+        recipe = Recipe(name=form.recipename.data, author_id=current_user.id)
         db.session.add(recipe)
         db.session.flush()
         ingredients = Ingredients(recipe_id=recipe.id, name=form.ingredient1.data, amount=form.ingredient1_amount.data, unit=form.ingredient1_unit.data)
