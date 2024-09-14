@@ -10,7 +10,7 @@
     <!-- Recipe Name Field -->
     <p>
         {{ form.name.label }}<br>
-        {{ form.name(size=64) }}<br>
+        {{ form.name }}<br>
         {% for error in form.name.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
@@ -19,7 +19,7 @@
     <!-- Author Field -->
     <p>
         {{ form.author.label }}<br>
-        {{ form.author(size=64) }}<br>
+        {{ form.author }}<br>
         {% for error in form.author.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
@@ -33,14 +33,14 @@
         <div>
             <p>
                 {{ ingredient.name.label }}<br>
-                {{ ingredient.name(size=64) }}<br>
+                {{ ingredient.name }}<br>
                 {% for error in ingredient.name.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </p>
             <p>
                 {{ ingredient.amount.label }}<br>
-                {{ ingredient.amount(size=10) }}<br>
+                {{ ingredient.amount }}<br>
                 {% for error in ingredient.amount.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
@@ -69,7 +69,7 @@
         <div>
             <p>
                 {{ instruction.task.label }}<br>
-                {{ instruction.task(rows=3, cols=64) }}<br>
+                {{ instruction.task }}<br>
                 {% for error in instruction.task.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
