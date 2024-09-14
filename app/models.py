@@ -22,7 +22,7 @@ class User(UserMixin, db.Model):
 class Recipe(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(200), index=True)
-    author = so.Mapped[str] = so.mapped_column(sa.String(64), index=True)
+    author: so.Mapped[str] = so.mapped_column(sa.String(64), index=True)
 
     # Relationships
     ingredients = so.relationship("Ingredients", backref="recipe", lazy="dynamic")
