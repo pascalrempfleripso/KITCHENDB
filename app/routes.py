@@ -86,31 +86,8 @@ def patch_user(user_id: int) -> Response:
 
 # ADD A NEW RECIPE
 @app.route("/add_recipe", methods=["GET", "POST"])
-def add_recipe():
+def add_recipe() -> Response:
     form = RecipeForm()
-
     if form.validate_on_submit():
-        # Create a new Recipe instance
-        recipe = Recipe(name=form.name.data, author=form.author.data)
-        db.session.add(recipe)
-        db.session.commit()
-
-        # Add ingredients
-        for ingredient_form in form.ingredients:
-            if ingredient_form.name.data and ingredient_form.amount.data and ingredient_form.unit.data:
-                ingredient = Ingredients(
-                    recipe_id=recipe.id, name=ingredient_form.name.data, amount=ingredient_form.amount.data, unit=ingredient_form.unit.data
-                )
-                db.session.add(ingredient)
-
-        # Add instructions
-        for instruction_form in form.instructions:
-            if instruction_form.task.data:
-                instruction = Instruction(recipe_id=recipe.id, tasks=instruction_form.task.data)
-                db.session.add(instruction)
-
-        db.session.commit()
-
-        return redirect(url_for("success"))  # Redirect to a success page or another view
-
+        return redirect(url_for("login"))
     return render_template("add_recipe.html", form=form)

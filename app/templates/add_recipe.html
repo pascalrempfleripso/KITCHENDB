@@ -9,9 +9,9 @@
 
     <!-- Recipe Name Field -->
     <p>
-        {{ form.name.label }}<br>
-        {{ form.name }}<br>
-        {% for error in form.name.errors %}
+        {{ form.recipename.label }}<br>
+        {{ form.recipename }}<br>
+        {% for error in form.recipename.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
@@ -24,58 +24,28 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-
-    <h2>Ingredients</h2>
-
-    <!-- Fixed Number of Ingredient Fields -->
-    <div id="ingredients">
-        {% for ingredient in form.ingredients %}
-        <div class="ingredient-item">
-            <p>
-                <!-- Ingredient Name Input -->
-                {{ ingredient.name.label }}<br>
-                {{ ingredient.name }}<br>
-                {% for error in ingredient.name.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>
-                <!-- Ingredient Amount Input -->
-                {{ ingredient.amount.label }}<br>
-                {{ ingredient.amount }}<br>
-                {% for error in ingredient.amount.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>
-                <!-- Ingredient Unit Dropdown -->
-                {{ ingredient.unit.label }}<br>
-                {{ ingredient.unit() }}<br>
-                {% for error in ingredient.unit.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-        </div>
+    
+    <p>
+        {{ form.ingredient1.label }}<br>
+        {{ form.ingredient1 }}<br>
+        {% for error in form.ingredient1.errors %}
+        <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-    </div>
-
-    <h2>Instructions</h2>
-
-    <!-- Fixed Number of Instruction Fields -->
-    <div id="instructions">
-        {% for instruction in form.instructions %}
-        <div>
-            <p>
-                {{ instruction.task.label }}<br>
-                {{ instruction.task }}<br>
-                {% for error in instruction.task.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-        </div>
+    </p>
+    <p>
+        {{ form.ingredient1_amount.label }}<br>
+        {{ form.ingredient1_amount }}<br>
+        {% for error in form.ingredient1_amount.errors %}
+        <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-    </div>
-
+    </p>
+    <p>
+        {{ form.task1.label }}<br>
+        {{ form.task1 }}<br>
+        {% for error in form.task1.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
     <!-- Submit Button -->
     <p>{{ form.submit() }}</p>
 </form>

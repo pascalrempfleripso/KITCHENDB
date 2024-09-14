@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, FieldList, FormField, PasswordField, SelectField, StringField, SubmitField, TextAreaField
+from wtforms import BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
@@ -18,31 +18,22 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Register")
 
 
-class IngredientForm(FlaskForm):
-    name = StringField("Ingredient Name", validators=[DataRequired(), Length(max=100)])
-    amount = StringField("Amount", validators=[DataRequired()])
-    unit = SelectField(
-        "Unit",
-        choices=[
-            ("mg", "milligrams (mg)"),
-            ("g", "grams (g)"),
-            ("kg", "kilograms (kg)"),
-            ("ml", "milliliters (ml)"),
-            ("l", "liters (l)"),
-        ],
-        validators=[DataRequired()],
-    )
-
-
-class InstructionForm(FlaskForm):
-    task = TextAreaField("Instruction", validators=[DataRequired(), Length(max=5000)])
-
-
 class RecipeForm(FlaskForm):
-    name = StringField("Recipe Name", validators=[DataRequired(), Length(max=200)])
-    author = StringField("Author Name", validators=[DataRequired(), Length(max=64)])
-    # Ingredients: A list of ingredients
-    ingredients = FieldList(FormField(IngredientForm), min_entries=1, max_entries=20)
-    # Instructions: A list of instructions
-    instructions = FieldList(FormField(InstructionForm), min_entries=1, max_entries=20)
-    submit = SubmitField("Submit Recipe")
+    recipename = StringField("Recipe", validators=[DataRequired()])
+    author = StringField("Author", validators=[DataRequired()])
+    ingredient1 = StringField("1.Ingredient", validators=[DataRequired()])
+    ingredient1_amount = IntegerField("1.Ingredient Amount", validators=[DataRequired()])
+    ingredient2 = StringField("2.Ingredient")
+    ingredient2_amount = IntegerField("2.Ingredient Amount")
+    ingredient3 = StringField("3.Ingredient")
+    ingredient3_amount = IntegerField("3.Ingredient Amount")
+    ingredient4 = StringField("4.Ingredient")
+    ingredient4_amount = IntegerField("4.Ingredient Amount")
+    ingredient5 = StringField("5.Ingredient")
+    ingredient5_amount = IntegerField("5.Ingredient Amount")
+    task1 = StringField("1. Task", validators=[DataRequired()])
+    task2 = StringField("2. Task")
+    task3 = StringField("3. Task")
+    task4 = StringField("4. Task")
+    task5 = StringField("5. Task")
+    submit = SubmitField("Save")
