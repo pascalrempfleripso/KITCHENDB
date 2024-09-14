@@ -20,7 +20,6 @@ class RegisterForm(FlaskForm):
 
 class RecipeForm(FlaskForm):
     recipename = StringField("Recipe", validators=[DataRequired()])
-    author = StringField("Author", validators=[DataRequired()])
     ingredient1 = StringField("1.Ingredient", validators=[DataRequired()])
     ingredient1_amount = IntegerField("1.Ingredient Amount", validators=[DataRequired()])
     ingredient1_unit = SelectField(

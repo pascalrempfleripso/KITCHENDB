@@ -92,7 +92,7 @@ def add_recipe() -> Response:
     if form.validate_on_submit():
         recipe = Recipe(name=form.recipename.data, author=current_user.username)
         db.session.add(recipe)
-        # db.session.flush()
+        db.session.flush()
         ingredients = Ingredients(recipe_id=recipe.id, name=form.ingredient1.data, amount=form.ingredient1_amount.data, unit=form.ingredient1_unit.data)
         db.session.add(ingredients)
         task = Instruction(recipe_id=recipe.id, task=form.task1.data)
