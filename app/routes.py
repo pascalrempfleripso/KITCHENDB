@@ -47,7 +47,7 @@ def register() -> Response:
 def dashboard() -> Response:
     user = {"username": "Pascal"}
     posts = [{"author": {"username": "Pascal"}, "body": "Offene Calzone"}]
-    return render_template("dashboard.html", title="Home", user=user, posts=posts)
+    return render_template("dashboard.html", title="Dashboard", user=user, posts=posts)
 
 
 # REST users
