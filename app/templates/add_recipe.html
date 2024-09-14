@@ -29,34 +29,30 @@
 
     <!-- Ingredients List -->
     <div id="ingredients">
-        {% for ingredient in form.ingredients %}
-        <div>
-            <p>
-                <!-- Ingredient Name Input -->
-                {{ ingredient.name.label }}<br>
-                {{ ingredient.name }}<br>
-                {% for error in ingredient.name.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>
-                <!-- Ingredient Amount Input -->
-                {{ ingredient.amount.label }}<br>
-                {{ ingredient.amount }}<br>
-                {% for error in ingredient.amount.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>
-                <!-- Ingredient Unit Dropdown -->
-                {{ ingredient.unit.label }}<br>
-                {{ ingredient.unit() }}<br>
-                {% for error in ingredient.unit.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-        </div>
-        {% endfor %}
+        <p>
+            <!-- Ingredient Name Input -->
+            {{ ingredient.name.label }}<br>
+            {{ ingredient.name }}<br>
+            {% for error in ingredient.name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- Ingredient Amount Input -->
+            {{ ingredient.amount.label }}<br>
+            {{ ingredient.amount }}<br>
+            {% for error in ingredient.amount.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- Ingredient Unit Dropdown -->
+            {{ ingredient.unit.label }}<br>
+            {{ ingredient.unit() }}<br>
+            {% for error in ingredient.unit.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
     </div>
     
     <!-- Add More Ingredients Button -->
