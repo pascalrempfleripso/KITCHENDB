@@ -41,6 +41,8 @@ class InstructionForm(FlaskForm):
 class RecipeForm(FlaskForm):
     name = StringField("Recipe Name", validators=[DataRequired(), Length(max=200)])
     author = StringField("Author Name", validators=[DataRequired(), Length(max=64)])
-    ingredients = StringField("Ingredient Name", validators=[DataRequired(), Length(max=100)])
-    instructions = TextAreaField("Instruction", validators=[DataRequired(), Length(max=5000)])
+    # Ingredients: A list of ingredients
+    ingredients = FieldList(FormField(IngredientForm), min_entries=1, max_entries=20)
+    # Instructions: A list of instructions
+    instructions = FieldList(FormField(InstructionForm), min_entries=1, max_entries=20)
     submit = SubmitField("Submit Recipe")
