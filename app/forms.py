@@ -43,7 +43,5 @@ class RecipeForm(FlaskForm):
         ],
         validators=[DataRequired()],
     )
-    task1 = StringField("1. Arbeitsschritt", validators=[DataRequired()])
-    # Tasks mit FieldList, um mehrere Tasks pro Rezept zu ermöglichen
-    # tasks = FieldList(FormField(TaskForm), min_entries=1, max_entries=20)
+    tasks = FieldList(FormField(TaskForm), min_entries=1)
     submit = SubmitField("Speichern")

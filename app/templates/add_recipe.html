@@ -34,16 +34,34 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-    <!-- Abschnitt zur dynamischen Erstellung mehrerer Arbeitsschritte -->
     <h2>Arbeitsschritte</h2>
-    <p>
-        {{ form.task1.label }}<br>
-        {{ form.task1 }}<br>
-        {% for error in form.task1.errors %}
-        <span style="color: red;">[{{ error }}]</span>
+    <div id="tasks-container">
+        {% for task_form in form.tasks %}
+            <p>
+                {{ task_form.task.label }}<br>
+                {{ task_form.task }}<br>
+                {% for error in task_form.task.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
         {% endfor %}
-    </p>
+    </div>
+    <button type="button" id="add-task">Add Task</button>
     <p>{{ form.submit() }}</p>
 </form>
+
+<script>
+    document.getElementById('add-task').addEventListener('click', function() {
+        var container = document.getElementById('tasks-container');
+        var index = container.children.length;
+        var taskHtml = `
+            <p>
+                <label for="tasks-${index}-task">Arbeitsschritt ${index + 1}</label><br>
+                <input type="text" name="tasks-${index}-task" id="tasks-${index}-task" required><br>
+            </p>
+        `;
+        container.insertAdjacentHTML('beforeend', taskHtml);
+    });
+    </script>
 
 {% endblock %}
