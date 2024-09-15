@@ -1,6 +1,6 @@
 # app.forms.py
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, StringField, SubmitField
+from wtforms import BooleanField, FieldList, Form, FormField, IntegerField, PasswordField, SelectField, StringField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo
 
 
@@ -22,12 +22,8 @@ class RegisterForm(FlaskForm):
 
 
 # Sub-Formular zum Hinzufügen von Arbeitsschritten für Rezepte
-class TaskForm(FlaskForm):
+class TaskForm(Form):
     task = StringField("Arbeitsschritt", validators=[DataRequired()])
-
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault("csrf_enabled", False)  # Disable CSRF for this form
-        super().__init__(*args, **kwargs)
 
 
 # Formular für das Hinzufügen neuer Rezepte
@@ -49,7 +45,3 @@ class RecipeForm(FlaskForm):
     )
     tasks = FieldList(FormField(TaskForm), min_entries=1)
     submit = SubmitField("Speichern")
-
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault("csrf_enabled", False)  # Disable CSRF for this form
-        super().__init__(*args, **kwargs)
