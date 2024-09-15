@@ -1,4 +1,5 @@
 # app/routes.py
+from collections import defaultdict
 from urllib.parse import urlsplit
 
 import bcrypt
@@ -98,7 +99,10 @@ def add_recipe() -> Response:
         db.session.flush()  # Damit wird die recipe.id erstellt
         for ingredient_form in form.ingredients:
             ingredient = Ingredients(
-                recipe_id=recipe.id, name=ingredient_form.ingredient.data, amount=ingredient_form.amount.data, unit=ingredient_form.unit.data
+                recipe_id=recipe.id,
+                name=ingredient_form.ingredient.data,
+                amount=ingredient_form.amount.data,
+                unit=ingredient_form.unit.data,
             )
             db.session.add(ingredient)
         for task_form in form.tasks:
@@ -149,3 +153,56 @@ def export_recipe(recipe_id: int) -> Response:
     response.headers["Content-Disposition"] = f"attachment; filename={recipe.name}.txt"
     response.headers["Content-Type"] = "text/plain"
     return response
+
+
+@app.route("/handle_recipe_actions", methods=["POST"])
+@login_required
+def handle_recipe_actions() -> Response:  # noqa: C901
+    # Get selected recipe IDs from the form
+    selected_recipes = request.form.getlist("selected_recipes")
+
+    if not selected_recipes:
+        flash("Keine Rezepte ausgewählt!", "error")
+        return redirect(url_for("index"))
+
+    action = request.form.get("action")
+
+    if action == "delete":
+        # Delete selected recipes, ingredients, and instructions
+        for recipe_id in selected_recipes:
+            recipe = Recipe.query.get(recipe_id)
+            if recipe and recipe.author_id == current_user.id:
+                # Delete related ingredients and instructions
+                Ingredients.query.filter_by(recipe_id=recipe_id).delete()
+                Instruction.query.filter_by(recipe_id=recipe_id).delete()
+                # Delete the recipe
+                db.session.delete(recipe)
+        db.session.commit()
+        flash("Ausgewählte Rezepte wurden erfolgreich gelöscht.", "success")
+
+    elif action == "export_ingredients":
+        # Aggregate ingredients across selected recipes
+        ingredient_totals = defaultdict(lambda: {"amount": 0, "unit": None})
+
+        for recipe_id in selected_recipes:
+            recipe = Recipe.query.get(recipe_id)
+            if recipe:
+                for ingredient in recipe.ingredients:
+                    name = ingredient.name
+                    if ingredient_totals[name]["unit"] is None:
+                        ingredient_totals[name]["unit"] = ingredient.unit
+                    # Assuming units are the same; summing up amounts
+                    ingredient_totals[name]["amount"] += ingredient.amount
+
+        # Generate the content for the export file
+        ingredients_text = "Zusammengefasste Zutaten:\n"
+        for name, info in ingredient_totals.items():
+            ingredients_text += f"- {info['amount']} {info['unit']} {name}\n"
+
+        # Create a response with the .txt file content
+        response = make_response(ingredients_text)
+        response.headers["Content-Disposition"] = "attachment; filename=combined_ingredients.txt"
+        response.headers["Content-Type"] = "text/plain"
+        return response
+
+    return redirect(url_for("index"))

@@ -2,15 +2,25 @@
 {% block content %}
     <h1>Hallo {{ current_user.username }}!</h1>
     <h1>Alle Rezepte:</h1>
-    <!-- Loop zur Anzeige aller Rezepte -->
-    <ol>
-    {% for recipe in recipes %}
-    <li>
-        <input type="checkbox" name="recipe-{{ recipe.id }}" id="recipe-{{ recipe.id }}">
-        <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">{{ recipe.name }}</a>
-    </li><br>
-    {% else %}
-    <p>Keine Rezepte bis jetzt? <a href="{{ url_for('add_recipe') }}">Hier welche Hinzufügen!</a></p>
-    {% endfor %}
-    </ol>
+
+    <!-- Form for selecting recipes and triggering actions -->
+    <form id="recipe-form" method="POST" action="{{ url_for('handle_recipe_actions') }}">
+        <!-- Loop to display all recipes with checkboxes -->
+        <ul>
+        {% for recipe in recipes %}
+        <li>
+            <input type="checkbox" name="selected_recipes" value="{{ recipe.id }}" id="{{ recipe.id }}">
+            <label for="{{ recipe.id }}">
+                <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">{{ recipe.name }}</a>
+            </label>
+        </li><br>
+        {% else %}
+        <p>Keine Rezepte bis jetzt? <a href="{{ url_for('add_recipe') }}">Hier welche Hinzufügen!</a></p>
+        {% endfor %}
+        </ul>
+
+        <!-- Buttons for actions -->
+        <button type="submit" name="action" value="delete" class="btn btn-danger">Ausgewählte Rezepte löschen</button>
+        <button type="submit" name="action" value="export_ingredients" class="btn btn-primary">Zutaten exportieren</button>
+    </form>
 {% endblock %}
