@@ -26,12 +26,11 @@ class TaskForm(Form):
     task = StringField("Arbeitsschritt", validators=[DataRequired()])
 
 
-# Formular für das Hinzufügen neuer Rezepte
-class RecipeForm(FlaskForm):
-    recipename = StringField("Rezept", validators=[DataRequired()])
-    ingredient1 = StringField("1. Zutat", validators=[DataRequired()])
-    ingredient1_amount = IntegerField("1. Zutat Menge", validators=[DataRequired()])
-    ingredient1_unit = SelectField(
+# Sub-Formular zum Hinzufügen von Zutaten für Rezepte
+class IngredientForm(Form):
+    name = StringField("Zutat", validators=[DataRequired()])
+    amount = IntegerField("Zutat Menge", validators=[DataRequired()])
+    unit = SelectField(
         "Masseinheit",
         choices=[
             ("mg", "mg"),
@@ -43,5 +42,11 @@ class RecipeForm(FlaskForm):
         ],
         validators=[DataRequired()],
     )
+
+
+# Formular für das Hinzufügen neuer Rezepte
+class RecipeForm(FlaskForm):
+    recipename = StringField("Rezept", validators=[DataRequired()])
+    ingredients = FieldList(FormField(IngredientForm), min_entries=1)
     tasks = FieldList(FormField(TaskForm), min_entries=1)
     submit = SubmitField("Speichern")

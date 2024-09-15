@@ -13,27 +13,36 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
-    <p>
-        {{ form.ingredient1.label }}<br>
-        {{ form.ingredient1 }}<br>
-        {% for error in form.ingredient1.errors %}
-        <span style="color: red;">[{{ error }}]</span>
+    <h2>Zutaten</h2>
+    <div id="ingredients-container">
+        {% for ingredient_form in form.ingredients %}
+        <div>
+            <p>
+                {{ ingredient_form.name.label }}<br>
+                {{ ingredient_form.name }}<br>
+                {% for error in ingredient_form.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ ingredient_form.amount.label }}<br>
+                {{ ingredient_form.amount }}<br>
+                {% for error in ingredient_form.amount.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ ingredient_form.unit.label }}<br>
+                {{ ingredient_form.unit }}<br>
+                {% for error in ingredient_form.unit.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+        </div>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.ingredient1_amount.label }}<br>
-        {{ form.ingredient1_amount }}<br>
-        {% for error in form.ingredient1_amount.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.ingredient1_unit.label }}<br>
-        {{ form.ingredient1_unit }}<br>
-        {% for error in form.ingredient1_unit.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
+    </div>
+    <button type="button" id="add-ingredient">Add Ingredient</button>
+
     <h2>Arbeitsschritte</h2>
     <div id="tasks-container">
         {% for task_form in form.tasks %}
@@ -51,6 +60,27 @@
 </form>
 
 <script>
+    document.getElementById('add-ingredient').addEventListener('click', function() {
+        var container = document.getElementById('ingredients-container');
+        var index = container.children.length;
+        var ingredientHtml = `
+            <div>
+                <p>
+                    <label for="ingredients-${index}-ingredient">Zutat ${index + 1}</label><br>
+                    <input type="text" name="ingredients-${index}-ingredient" id="ingredients-${index}-ingredient" required><br>
+                </p>
+                <p>
+                    <label for="ingredients-${index}-amount">Menge ${index + 1}</label><br>
+                    <input type="text" name="ingredients-${index}-amount" id="ingredients-${index}-amount" required><br>
+                </p>
+                <p>
+                    <label for="ingredients-${index}-unit">Einheit ${index + 1}</label><br>
+                    <input type="text" name="ingredients-${index}-unit" id="ingredients-${index}-unit" required><br>
+                </p>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', ingredientHtml);
+    });
     document.getElementById('add-task').addEventListener('click', function() {
         var container = document.getElementById('tasks-container');
         var index = container.children.length;

@@ -96,8 +96,9 @@ def add_recipe() -> Response:
         recipe = Recipe(name=form.recipename.data, author_id=current_user.id)
         db.session.add(recipe)
         db.session.flush()  # Damit wird die recipe.id erstellt
-        ingredients = Ingredients(recipe_id=recipe.id, name=form.ingredient1.data, amount=form.ingredient1_amount.data, unit=form.ingredient1_unit.data)
-        db.session.add(ingredients)
+        for ingredient_form in form.ingredients:
+            ingredient = Ingredients(recipe_id=recipe.id, name=ingredient_form.name.data, amount=ingredient_form.amount.data, unit=ingredient_form.unit.data)
+            db.session.add(ingredient)
         for task_form in form.tasks:
             task = Instruction(recipe_id=recipe.id, tasks=task_form.task.data)
             db.session.add(task)
