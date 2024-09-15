@@ -2,9 +2,11 @@
 {% block content %}
     <h1>Hallo {{ current_user.username }}!</h1>
     <h1>Alle Rezepte:</h1>
-    <!-- Loop through each recipe -->
+    <!-- Loop zur Anzeige aller Rezepte -->
     {% for recipe in recipes %}
-    <p>{{ recipe.name }}</p><br>
+    <p>
+        <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">{{ recipe.name }}</a>
+    </p><br>
     {% else %}
     <p>Keine Rezepte bis jetzt? <a href="{{ url_for('add_recipe') }}">Hier welche Hinzufügen!</a></p>
     {% endfor %}

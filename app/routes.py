@@ -103,3 +103,16 @@ def add_recipe() -> Response:
         db.session.commit()
         return redirect(url_for("login"))
     return render_template("add_recipe.html", form=form)
+
+
+# Zusätzliche Seite zur Anzeige der Rezeptdetails
+@app.route("/recipe/<int:recipe_id>")
+@login_required
+def recipe_detail(recipe_id: int) -> Response:
+    # Query in DB "Recipe" anhand recipe_id
+    recipe = Recipe.query.get_or_404(recipe_id)
+    # Alle dazugehörigen Zutaten und Arbeitsschritte:
+    ingredients = recipe.ingredients.all()
+    instructions = recipe.instructions.all()
+    # Aufruf .html
+    return render_template("recipe_detail.html", recipe=recipe, ingredients=ingredients, instructions=instructions)

@@ -8,7 +8,7 @@ class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     remember_me = BooleanField("Remember Me")
-    submit = SubmitField("Sign In")
+    submit = SubmitField("Login")
 
 
 # Register Formular - Quelle https://blog.miguelgrinberg.com/
@@ -16,8 +16,8 @@ class RegisterForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     email = StringField("E-Mail", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
-    password2 = PasswordField("Repeat Password", validators=[DataRequired(), EqualTo("password")])
-    submit = SubmitField("Register")
+    password2 = PasswordField("Password wiederholen", validators=[DataRequired(), EqualTo("password")])
+    submit = SubmitField("Registrieren")
 
 
 # Formular für das Hinzufügen neuer Rezepte
