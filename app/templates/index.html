@@ -3,12 +3,14 @@
     <h1>Hallo {{ current_user.username }}!</h1>
     <h1>Alle Rezepte:</h1>
     <!-- Loop zur Anzeige aller Rezepte -->
+    <ol>
     {% for recipe in recipes %}
-    <p>
+    <li>
         <input type="checkbox" name="recipe-{{ recipe.id }}" id="recipe-{{ recipe.id }}">
         <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">{{ recipe.name }}</a>
-    </p><br>
+    </li><br>
     {% else %}
     <p>Keine Rezepte bis jetzt? <a href="{{ url_for('add_recipe') }}">Hier welche Hinzufügen!</a></p>
     {% endfor %}
+    </ol>
 {% endblock %}
