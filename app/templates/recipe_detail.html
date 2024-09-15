@@ -2,10 +2,10 @@
 {% block content %}
     <h1>Rezept: {{ recipe.name }}</h1>
 
-    <!-- Display the author -->
+    <!-- Autor anzeigen: -->
     <p>Autor: {{ recipe.author.username }}</p>
 
-    <!-- Display the ingredients -->
+    <!-- Alle Zutaten ausgeben -->
     <h2>Zutaten:</h2>
     <ul>
         {% for ingredient in ingredients %}
@@ -15,7 +15,7 @@
         {% endfor %}
     </ul>
 
-    <!-- Display the instructions -->
+    <!-- Alle Arbeitsschritte anzeigen -->
     <h2>Anleitung:</h2>
     <ol>
         {% for instruction in instructions %}
@@ -25,5 +25,11 @@
         {% endfor %}
     </ol>
 
+    <a href="{{ url_for('index') }}">Zurück zur Startseite</a>
+
+    <!-- Export als .txt-File Button -->
+    <a href="{{ url_for('export_recipe', recipe_id=recipe.id) }}" class="btn btn-primary">Export als .txt</a>
+
+    <br><br>
     <a href="{{ url_for('index') }}">Zurück zur Startseite</a>
 {% endblock %}

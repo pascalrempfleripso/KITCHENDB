@@ -3,7 +3,7 @@ from urllib.parse import urlsplit
 
 import bcrypt
 import sqlalchemy as sa
-from flask import Response, flash, jsonify, redirect, render_template, request, url_for
+from flask import Response, flash, jsonify, make_response, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, db
@@ -116,3 +116,29 @@ def recipe_detail(recipe_id: int) -> Response:
     instructions = recipe.instructions.all()
     # Aufruf .html
     return render_template("recipe_detail.html", recipe=recipe, ingredients=ingredients, instructions=instructions)
+
+
+# Export eines Rezept in ein .txt File
+@app.route("/recipe/<int:recipe_id>/export")
+@login_required
+def export_recipe(recipe_id: int) -> Response:
+    # Query in DB "Recipe" anhand recipe_id
+    recipe = Recipe.query.get_or_404(recipe_id)
+    # Alle dazugehörigen Zutaten und Arbeitsschritte:
+    ingredients = recipe.ingredients.all()
+    instructions = recipe.instructions.all()
+    # Inhalt für .txt file
+    recipe_text = f"Recipe: {recipe.name}\n"
+    recipe_text += f"Author: {recipe.author.username}\n\n"
+    recipe_text += "Ingredients:\n"
+    for ingredient in ingredients:
+        recipe_text += f"- {ingredient.amount} {ingredient.unit} {ingredient.name}\n"
+    recipe_text += "\nInstructions:\n"
+    for idx, instruction in enumerate(instructions, start=1):
+        recipe_text += f"{idx}. {instruction.tasks}\n"
+    # Create a response object with the text content
+    response = make_response(recipe_text)
+    # Set the headers for a file download
+    response.headers["Content-Disposition"] = f"attachment; filename={recipe.name}.txt"
+    response.headers["Content-Type"] = "text/plain"
+    return response
