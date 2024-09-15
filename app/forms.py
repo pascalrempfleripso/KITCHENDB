@@ -28,7 +28,7 @@ class TaskForm(Form):
 
 # Sub-Formular zum Hinzufügen von Zutaten für Rezepte
 class IngredientForm(Form):
-    name = StringField("Zutat", validators=[DataRequired()])
+    ingredient = StringField("Zutat", validators=[DataRequired()])
     amount = IntegerField("Zutat Menge", validators=[DataRequired()])
     unit = SelectField(
         "Masseinheit",
