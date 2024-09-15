@@ -37,17 +37,5 @@ class RecipeForm(FlaskForm):
         ],
         validators=[DataRequired()],
     )
-    ingredient2 = StringField("2.Ingredient")
-    ingredient2_amount = IntegerField("2.Ingredient Amount")
-    ingredient3 = StringField("3.Ingredient")
-    ingredient3_amount = IntegerField("3.Ingredient Amount")
-    ingredient4 = StringField("4.Ingredient")
-    ingredient4_amount = IntegerField("4.Ingredient Amount")
-    ingredient5 = StringField("5.Ingredient")
-    ingredient5_amount = IntegerField("5.Ingredient Amount")
     task1 = StringField("1. Task", validators=[DataRequired()])
-    task2 = StringField("2. Task")
-    task3 = StringField("3. Task")
-    task4 = StringField("4. Task")
-    task5 = StringField("5. Task")
     submit = SubmitField("Save")
