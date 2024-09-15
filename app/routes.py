@@ -103,6 +103,9 @@ def add_recipe() -> Response:
             db.session.add(task)
         db.session.commit()
         return redirect(url_for("recipe_detail", recipe_id=recipe.id))
+    for field, errors in form.errors.items():
+        for error in errors:
+            flash(f"{field.capitalize()}: {error}", "error")
     return render_template("add_recipe.html", form=form)
 
 
