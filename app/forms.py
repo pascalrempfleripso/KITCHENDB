@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms import BooleanField, IntegerField, PasswordField, SelectField, StringField, SubmitField
+from wtforms.validators import DataRequired, Email, EqualTo
 
 
+# Login Formular - Quelle https://blog.miguelgrinberg.com/
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
@@ -10,6 +11,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Sign In")
 
 
+# Register Formular - Quelle https://blog.miguelgrinberg.com/
 class RegisterForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     email = StringField("E-Mail", validators=[DataRequired(), Email()])
@@ -18,6 +20,7 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Register")
 
 
+# Formular für das Hinzufügen neuer Rezepte
 class RecipeForm(FlaskForm):
     recipename = StringField("Recipe", validators=[DataRequired()])
     ingredient1 = StringField("1.Ingredient", validators=[DataRequired()])

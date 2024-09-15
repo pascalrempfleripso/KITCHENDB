@@ -6,8 +6,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config.from_object(Config)
+# Variabeln für SQL
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+# Variabeln für Login
 login = LoginManager()
 login.init_app(app)
 login.login_view = "login"
