@@ -49,3 +49,7 @@ class RecipeForm(FlaskForm):
     )
     tasks = FieldList(FormField(TaskForm), min_entries=1)
     submit = SubmitField("Speichern")
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("csrf_enabled", False)  # Disable CSRF for this form
+        super().__init__(*args, **kwargs)
