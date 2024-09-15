@@ -71,11 +71,18 @@
                 </p>
                 <p>
                     <label for="ingredients-${index}-amount">Menge ${index + 1}</label><br>
-                    <input type="text" name="ingredients-${index}-amount" id="ingredients-${index}-amount" required><br>
+                    <input type="number" name="ingredients-${index}-amount" id="ingredients-${index}-amount" required><br>
                 </p>
                 <p>
                     <label for="ingredients-${index}-unit">Einheit ${index + 1}</label><br>
-                    <input type="text" name="ingredients-${index}-unit" id="ingredients-${index}-unit" required><br>
+                    <select name="ingredients-${index}-unit" id="ingredients-${index}-unit" required>
+                        <option value="mg">mg</option>
+                        <option value="g">g</option>
+                        <option value="kg">kg</option>
+                        <option value="ml">ml</option>
+                        <option value="l">l</option>
+                        <option value="stk">stk</option>
+                    </select><br>
                 </p>
             </div>
         `;
