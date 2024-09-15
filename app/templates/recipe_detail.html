@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Rezept: {{ recipe.name }}</h1>
+
+    <!-- Display the author -->
+    <p>Autor: {{ recipe.author.username }}</p>
+
+    <!-- Display the ingredients -->
+    <h2>Zutaten:</h2>
+    <ul>
+        {% for ingredient in ingredients %}
+            <li>{{ ingredient.amount }} {{ ingredient.unit }} {{ ingredient.name }}</li>
+        {% else %}
+            <p>Keine Zutaten vorhanden.</p>
+        {% endfor %}
+    </ul>
+
+    <!-- Display the instructions -->
+    <h2>Anleitung:</h2>
+    <ol>
+        {% for instruction in instructions %}
+            <li>{{ instruction.tasks }}</li>
+        {% else %}
+            <p>Keine Anleitung vorhanden.</p>
+        {% endfor %}
+    </ol>
+
+    <a href="{{ url_for('index') }}">Zurück zur Startseite</a>
+{% endblock %}
