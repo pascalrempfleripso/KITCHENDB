@@ -18,9 +18,9 @@
         {% for ingredient_form in form.ingredients %}
         <div>
             <p>
-                {{ ingredient_form.name.label }}<br>
-                {{ ingredient_form.name }}<br>
-                {% for error in ingredient_form.name.errors %}
+                {{ ingredient_form.ingredient.label }}<br>
+                {{ ingredient_form.ingredient }}<br>
+                {% for error in ingredient_form.ingredient.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </p>
@@ -74,7 +74,7 @@
                     <input type="number" name="ingredients-${index}-amount" id="ingredients-${index}-amount" required><br>
                 </p>
                 <p>
-                    <label for="ingredients-${index}-unit">Einheit ${index + 1}</label><br>
+                    <label for="ingredients-${index}-unit">Masseinheit ${index + 1}</label><br>
                     <select name="ingredients-${index}-unit" id="ingredients-${index}-unit" required>
                         <option value="mg">mg</option>
                         <option value="g">g</option>
