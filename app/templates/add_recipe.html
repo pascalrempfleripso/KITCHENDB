@@ -48,18 +48,31 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Add more ingredients
-        document.getElementById("add-ingredient").addEventListener("click", function () {
-            let newIngredient = document.querySelector(".ingredient").cloneNode(true);
-            document.getElementById("ingredients").appendChild(newIngredient);
-        });
-    
+        let taskCounter = {{ form.tasks|length }};  // Starting from the number of existing tasks
+
         // Add more tasks
         document.getElementById("add-task").addEventListener("click", function () {
             let newTask = document.querySelector(".task").cloneNode(true);
+
+            // Increment taskCounter to ensure unique names/ids
+            taskCounter += 1;
+
+            // Update the cloned task's name and id attributes to ensure uniqueness
+            let taskLabel = newTask.querySelector("label");
+            let taskInput = newTask.querySelector("input");
+
+            taskLabel.setAttribute("for", `task-${taskCounter}`);
+            taskInput.setAttribute("id", `task-${taskCounter}`);
+            taskInput.setAttribute("name", `tasks-${taskCounter}`);
+
+            // Clear the input field in the cloned task
+            taskInput.value = "";
+
+            // Append the new task to the tasks container
             document.getElementById("tasks").appendChild(newTask);
         });
     });
-    </script>
+</script>
+
 
 {% endblock %}
