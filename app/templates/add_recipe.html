@@ -46,4 +46,20 @@
     <p>{{ form.submit() }}</p>
 </form>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Add more ingredients
+        document.getElementById("add-ingredient").addEventListener("click", function () {
+            let newIngredient = document.querySelector(".ingredient").cloneNode(true);
+            document.getElementById("ingredients").appendChild(newIngredient);
+        });
+    
+        // Add more tasks
+        document.getElementById("add-task").addEventListener("click", function () {
+            let newTask = document.querySelector(".task").cloneNode(true);
+            document.getElementById("tasks").appendChild(newTask);
+        });
+    });
+    </script>
+
 {% endblock %}
