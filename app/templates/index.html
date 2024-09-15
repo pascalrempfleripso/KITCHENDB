@@ -9,10 +9,8 @@
     <h1>Alle Rezepte:</h1>
     <!-- Loop through each recipe -->
     {% for recipe in recipes %}
-    <li>
-        <strong>{{ recipe.name }}</strong><br>
-    </li>
+    <p>{{ recipe.name }}</p><br>
+    <p>Keine Rezepte bis jetzt!? <a href="{{ url_for('add_recipe') }}">Hier welche Hinzufügen!</a></p>
     {% else %}
-    <li>No recipes found.</li>
     {% endfor %}
 {% endblock %}
