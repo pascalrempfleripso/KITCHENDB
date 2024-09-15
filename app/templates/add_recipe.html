@@ -36,88 +36,14 @@
     </p>
     <!-- Abschnitt zur dynamischen Erstellung mehrerer Arbeitsschritte -->
     <h2>Arbeitsschritte</h2>
-    <div id="tasks">
-        {% for task in form.tasks %}
-        <div class="task" data-task-id="{{ forloop.counter0 }}">
-            <p>{{ task.task.label }}<br> {{ task.task }}<br></p>
-        </div>
+    <p>
+        {{ form.task1.label }}<br>
+        {{ form.task1 }}<br>
+        {% for error in form.task1.errors %}
+        <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-    </div>
-    <button type="button" id="add-task">Weiteren Arbeitsschritt hinzufügen</button>
+    </p>
     <p>{{ form.submit() }}</p>
 </form>
-
-<!-- JavaScript for dynamic task addition -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Array to hold tasks
-        let tasks = [];
-        
-        // Initialize tasks from existing form data
-        document.querySelectorAll('#tasks .task').forEach((taskElement, index) => {
-            const taskId = taskElement.dataset.taskId;
-            const taskInput = taskElement.querySelector('input');
-            tasks.push({
-                id: taskId,
-                value: taskInput ? taskInput.value : ''
-            });
-        });
-
-        let taskCounter = tasks.length;  // Number of tasks initially rendered
-
-        // Add more tasks dynamically
-        document.getElementById("add-task").addEventListener("click", function () {
-            // Get the task container
-            const taskContainer = document.getElementById("tasks");
-
-            // Create a new div for the new task
-            let newTaskDiv = document.createElement("div");
-            newTaskDiv.classList.add("task");
-            newTaskDiv.setAttribute("data-task-id", taskCounter);  // Set unique task ID
-
-            // Create a label for the task
-            let newLabel = document.createElement("label");
-            newLabel.setAttribute("for", `tasks-${taskCounter}-task`);
-            newLabel.textContent = `Arbeitsschritt ${taskCounter + 1}`;  // Update label text
-
-            // Create an input field for the new task
-            let newTaskInput = document.createElement("input");
-            newTaskInput.setAttribute("type", "text");
-            newTaskInput.setAttribute("name", `tasks-${taskCounter}-task`);
-            newTaskInput.setAttribute("id", `tasks-${taskCounter}-task`);
-            newTaskInput.classList.add("form-control");  // Add any classes you need
-
-            // Append label and input to the new div
-            newTaskDiv.appendChild(newLabel);
-            newTaskDiv.appendChild(newTaskInput);
-
-            // Append the new task div to the task container
-            taskContainer.appendChild(newTaskDiv);
-
-            // Add new task to the tasks array
-            tasks.push({
-                id: taskCounter,
-                value: ''
-            });
-
-            // Increment taskCounter to ensure unique IDs and names for the next task
-            taskCounter += 1;
-        });
-
-        // Function to update the tasks array
-        function updateTasksArray() {
-            tasks = [];
-            document.querySelectorAll('#tasks .task').forEach((taskElement) => {
-                const taskId = taskElement.dataset.taskId;
-                const taskInput = taskElement.querySelector('input');
-                tasks.push({
-                    id: taskId,
-                    value: taskInput ? taskInput.value : ''
-                });
-            });
-        }
-    });
-</script>
-
 
 {% endblock %}
