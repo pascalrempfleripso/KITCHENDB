@@ -102,10 +102,12 @@ def add_recipe() -> Response:
         # db.session.add(tasks)
         # Loop zur Ermöglichung von mehreren Arbeitsschritten pro Rezept
         for task_form in form.tasks.data:
-            task = Instruction(recipe_id=recipe.id, tasks=task_form["task"])
-            db.session.add(task)
+            # task_form should be a dictionary with a 'task' key
+            if "task" in task_form:
+                task = Instruction(recipe_id=recipe.id, tasks=task_form["task"])
+                db.session.add(task)
         db.session.commit()
-        return redirect(url_for("login"))
+        return redirect(url_for("recipe_detail", recipe_id=recipe.id))
     return render_template("add_recipe.html", form=form)
 
 
