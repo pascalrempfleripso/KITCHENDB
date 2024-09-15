@@ -33,6 +33,17 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
+    <!-- Abschnitt zur dynamischen Erstellung mehrerer Arbeitsschritte -->
+    <h2>Arbeitsschritte</h2>
+    <div id="tasks">
+        {% for task in form.tasks %}
+        <div class="task">
+            <p>{{ task.task.label }}<br> {{ task.task }}<br></p>
+        </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-task">Weiteren Arbeitsschritt hinzufügen</button>
+<!--
     <p>
         {{ form.task1.label }}<br>
         {{ form.task1 }}<br>
@@ -40,6 +51,7 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
     </p>
+-->
     <p>{{ form.submit() }}</p>
 </form>
 

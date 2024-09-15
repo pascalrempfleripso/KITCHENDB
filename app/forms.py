@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, IntegerField, PasswordField, SelectField, StringField, SubmitField
+from wtforms import BooleanField, FieldList, FormField, IntegerField, PasswordField, SelectField, StringField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo
 
 
@@ -20,6 +20,11 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Registrieren")
 
 
+# Sub-Formular zum Hinzufügen von Arbeitsschritten für Rezepte
+class TaskForm(FlaskForm):
+    task = StringField("Arbeitsschritt", validators=[DataRequired()])
+
+
 # Formular für das Hinzufügen neuer Rezepte
 class RecipeForm(FlaskForm):
     recipename = StringField("Rezept", validators=[DataRequired()])
@@ -37,5 +42,7 @@ class RecipeForm(FlaskForm):
         ],
         validators=[DataRequired()],
     )
-    task1 = StringField("1. Arbeitsschritt", validators=[DataRequired()])
+    # task1 = StringField("1. Arbeitsschritt", validators=[DataRequired()])
+    # Tasks mit FieldList, um mehrere Tasks pro Rezept zu ermöglichen
+    tasks = FieldList(FormField(TaskForm), min_entries=1, max_entries=20)
     submit = SubmitField("Speichern")

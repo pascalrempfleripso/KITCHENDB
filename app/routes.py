@@ -95,11 +95,15 @@ def add_recipe() -> Response:
     if form.validate_on_submit():
         recipe = Recipe(name=form.recipename.data, author_id=current_user.id)
         db.session.add(recipe)
-        db.session.flush()
+        db.session.flush()  # Damit wird die recipe.id erstellt
         ingredients = Ingredients(recipe_id=recipe.id, name=form.ingredient1.data, amount=form.ingredient1_amount.data, unit=form.ingredient1_unit.data)
         db.session.add(ingredients)
-        tasks = Instruction(recipe_id=recipe.id, tasks=form.task1.data)
-        db.session.add(tasks)
+        # tasks = Instruction(recipe_id=recipe.id, tasks=form.task1.data)
+        # db.session.add(tasks)
+        # Loop zur Ermöglichung von mehreren Arbeitsschritten pro Rezept
+        for task_form in form.tasks.data:
+            task = Instruction(recipe_id=recipe.id, tasks=task_form["task"])
+            db.session.add(task)
         db.session.commit()
         return redirect(url_for("login"))
     return render_template("add_recipe.html", form=form)
@@ -128,17 +132,17 @@ def export_recipe(recipe_id: int) -> Response:
     ingredients = recipe.ingredients.all()
     instructions = recipe.instructions.all()
     # Inhalt für .txt file
-    recipe_text = f"Recipe: {recipe.name}\n"
-    recipe_text += f"Author: {recipe.author.username}\n\n"
-    recipe_text += "Ingredients:\n"
+    recipe_text = f"Rezept: {recipe.name}\n"
+    recipe_text += f"Autor: {recipe.author.username}\n\n"
+    recipe_text += "Zutaten:\n"
     for ingredient in ingredients:
         recipe_text += f"- {ingredient.amount} {ingredient.unit} {ingredient.name}\n"
-    recipe_text += "\nInstructions:\n"
+    recipe_text += "\nAnleitung:\n"
     for idx, instruction in enumerate(instructions, start=1):
         recipe_text += f"{idx}. {instruction.tasks}\n"
-    # Create a response object with the text content
+    # Response mit .txt-File-Inhalt erstellen
     response = make_response(recipe_text)
-    # Set the headers for a file download
+    # Header für File-Download setzen
     response.headers["Content-Disposition"] = f"attachment; filename={recipe.name}.txt"
     response.headers["Content-Type"] = "text/plain"
     return response
