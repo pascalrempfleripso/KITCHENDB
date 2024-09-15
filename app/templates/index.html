@@ -10,7 +10,7 @@
     <!-- Loop through each recipe -->
     {% for recipe in recipes %}
     <p>{{ recipe.name }}</p><br>
-    <p>Keine Rezepte bis jetzt!? <a href="{{ url_for('add_recipe') }}">Hier welche Hinzufügen!</a></p>
     {% else %}
+    <p>Keine Rezepte bis jetzt!? <a href="{{ url_for('add_recipe') }}">Hier welche Hinzufügen!</a></p>
     {% endfor %}
 {% endblock %}
