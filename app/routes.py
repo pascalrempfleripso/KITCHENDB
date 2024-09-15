@@ -104,7 +104,7 @@ def add_recipe() -> Response:
         for task_form in form.tasks.data:
             # task_form should be a dictionary with a 'task' key
             if "task" in task_form:
-                task = Instruction(recipe_id=recipe.id, tasks=task_form["task"])
+                task = Instruction(recipe_id=recipe.id, tasks=task_form["task"])  # noqa: Q000
                 db.session.add(task)
         db.session.commit()
         return redirect(url_for("recipe_detail", recipe_id=recipe.id))
