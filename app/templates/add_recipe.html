@@ -43,15 +43,6 @@
         {% endfor %}
     </div>
     <button type="button" id="add-task">Weiteren Arbeitsschritt hinzufügen</button>
-<!--
-    <p>
-        {{ form.task1.label }}<br>
-        {{ form.task1 }}<br>
-        {% for error in form.task1.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
--->
     <p>{{ form.submit() }}</p>
 </form>
 
