@@ -5,7 +5,7 @@
         {% if title %}
         <title>{{ title }} - KITCHEN DATABASE</title>
         {% else %}
-        <title>WELCOME TO THE KITCHEN DATABASE</title>
+        <title>KITCHEN DATABASE</title>
         {% endif %}
     </head>
     <body>
@@ -17,7 +17,7 @@
             {% else %}
             <a href="{{ url_for('logout') }}">Logout</a>
             {% endif %}
-            <a href="{{ url_for('add_recipe') }}">Add recipe</a>
+            <a href="{{ url_for('add_recipe') }}">Neues Rezept</a>
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}

@@ -9,7 +9,7 @@ from sqlalchemy import ForeignKey
 from app import db, login
 
 
-# DB User / Quelle https://blog.miguelgrinberg.com/
+# DB User - Quelle https://blog.miguelgrinberg.com/
 class User(UserMixin, db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)

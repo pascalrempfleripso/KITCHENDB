@@ -22,11 +22,11 @@ class RegisterForm(FlaskForm):
 
 # Formular für das Hinzufügen neuer Rezepte
 class RecipeForm(FlaskForm):
-    recipename = StringField("Recipe", validators=[DataRequired()])
-    ingredient1 = StringField("1.Ingredient", validators=[DataRequired()])
-    ingredient1_amount = IntegerField("1.Ingredient Amount", validators=[DataRequired()])
+    recipename = StringField("Rezept", validators=[DataRequired()])
+    ingredient1 = StringField("1. Zutat", validators=[DataRequired()])
+    ingredient1_amount = IntegerField("1. Zutat Menge", validators=[DataRequired()])
     ingredient1_unit = SelectField(
-        "Unit",
+        "Masseinheit",
         choices=[
             ("mg", "mg"),
             ("g", "g"),
@@ -37,5 +37,5 @@ class RecipeForm(FlaskForm):
         ],
         validators=[DataRequired()],
     )
-    task1 = StringField("1. Task", validators=[DataRequired()])
-    submit = SubmitField("Save")
+    task1 = StringField("1. Arbeitsschritt", validators=[DataRequired()])
+    submit = SubmitField("Speichern")
