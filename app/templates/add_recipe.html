@@ -1,3 +1,4 @@
+<!-- add_recipe.html -->
 {% extends "base.html" %}
 
 {% block content %}
@@ -46,30 +47,41 @@
     <p>{{ form.submit() }}</p>
 </form>
 
+<!-- JavaScript for dynamic task addition -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let taskCounter = {{ form.tasks|length }};  // Starting from the number of existing tasks
+        let taskCounter = {{ form.tasks|length }};  // Number of tasks initially rendered
 
-        // Add more tasks
+        // Add more tasks dynamically
         document.getElementById("add-task").addEventListener("click", function () {
-            let newTask = document.querySelector(".task").cloneNode(true);
+            // Get the task container
+            const taskContainer = document.getElementById("tasks");
 
-            // Increment taskCounter to ensure unique names/ids
+            // Create a new div for the new task
+            let newTaskDiv = document.createElement("div");
+            newTaskDiv.classList.add("task");
+
+            // Create a label for the task
+            let newLabel = document.createElement("label");
+            newLabel.setAttribute("for", `tasks-${taskCounter}-task`);
+            newLabel.textContent = `Arbeitsschritt ${taskCounter + 1}`;  // Update label text
+
+            // Create an input field for the new task
+            let newTaskInput = document.createElement("input");
+            newTaskInput.setAttribute("type", "text");
+            newTaskInput.setAttribute("name", `tasks-${taskCounter}-task`);
+            newTaskInput.setAttribute("id", `tasks-${taskCounter}-task`);
+            newTaskInput.classList.add("form-control");  // Add any classes you need
+
+            // Append label and input to the new div
+            newTaskDiv.appendChild(newLabel);
+            newTaskDiv.appendChild(newTaskInput);
+
+            // Append the new task div to the task container
+            taskContainer.appendChild(newTaskDiv);
+
+            // Increment taskCounter to ensure unique IDs and names for the next task
             taskCounter += 1;
-
-            // Update the cloned task's name and id attributes to ensure uniqueness
-            let taskLabel = newTask.querySelector("label");
-            let taskInput = newTask.querySelector("input");
-
-            taskLabel.setAttribute("for", `task-${taskCounter}`);
-            taskInput.setAttribute("id", `task-${taskCounter}`);
-            taskInput.setAttribute("name", `tasks-${taskCounter}`);
-
-            // Clear the input field in the cloned task
-            taskInput.value = "";
-
-            // Append the new task to the tasks container
-            document.getElementById("tasks").appendChild(newTask);
         });
     });
 </script>
