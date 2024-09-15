@@ -9,6 +9,7 @@ from sqlalchemy import ForeignKey
 from app import db, login
 
 
+# DB User / Quelle https://blog.miguelgrinberg.com/
 class User(UserMixin, db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
@@ -19,12 +20,13 @@ class User(UserMixin, db.Model):
         return f"<User {self.username}>"
 
 
+# DB Rezepte
 class Recipe(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(200), index=True)
     author_id: so.Mapped[int] = so.mapped_column(ForeignKey("user.id"), index=True)
 
-    # Relationships
+    # Relationships zu anderen DBs
     author = so.relationship("User", backref="recipes")
     ingredients = so.relationship("Ingredients", backref="recipe", lazy="dynamic")
     instructions = so.relationship("Instruction", backref="recipe", lazy="dynamic")
@@ -33,6 +35,7 @@ class Recipe(db.Model):
         return f"<Recipe {self.name}>"
 
 
+# DB Zutaten
 class Ingredients(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     recipe_id: so.Mapped[int] = so.mapped_column(ForeignKey("recipe.id"), index=True)
@@ -44,6 +47,7 @@ class Ingredients(db.Model):
         return f"<Ingredient {self.name}>"
 
 
+# DB Anleitung / Arbeitsschritte
 class Instruction(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     recipe_id: so.Mapped[int] = so.mapped_column(ForeignKey("recipe.id"), index=True)
@@ -53,11 +57,13 @@ class Instruction(db.Model):
         return f"<Instruction {self.id}>"
 
 
+# Quelle https://blog.miguelgrinberg.com/
 @login.user_loader
 def load_user(user_id: int) -> User:
     return db.session.get(User, user_id)
 
 
+# Function zur Erstellung neuer User
 def create_user(username: str, email: str, password: str) -> User:
     salt = bcrypt.gensalt()
     new_user = User(username=username, email=email, password_hash=bcrypt.hashpw(password.encode(), salt))

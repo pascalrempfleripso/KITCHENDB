@@ -11,15 +11,15 @@ from app.forms import LoginForm, RecipeForm, RegisterForm
 from app.models import Ingredients, Instruction, Recipe, User, create_user
 
 
+# Startseite / Index
 @app.route("/")
 @app.route("/index")
 @login_required
 def index() -> Response:
-    posts = [{"author": {"username": "Pascal"}, "body": "Offene Calzone"}]
-    return render_template("index.html", title="Home", posts=posts)
+    return render_template("index.html", title="Home")
 
 
-# Login Form:
+# User Login - Quelle https://blog.miguelgrinberg.com/
 @app.route("/login", methods=["GET", "POST"])
 def login() -> Response:
     if current_user.is_authenticated:
@@ -38,13 +38,14 @@ def login() -> Response:
     return render_template("login.html", title="Sign In", form=form)
 
 
+# User Logout - Quelle https://blog.miguelgrinberg.com/
 @app.route("/logout")
 def logout() -> Response:
     logout_user()
     return redirect(url_for("index"))
 
 
-# Register Form:
+# Registrierung neuer User - Eigene Version mit Inspiration von https://blog.miguelgrinberg.com/
 @app.route("/register", methods=["GET", "POST"])
 def register() -> Response:
     form = RegisterForm()
@@ -55,7 +56,7 @@ def register() -> Response:
     return render_template("register.html", title="Register", form=form)
 
 
-# REST users
+# REST-API Funktionen
 # GET ALL USERS
 @app.route("/users", methods=["GET"])
 def get_users() -> Response:
@@ -84,7 +85,7 @@ def patch_user(user_id: int) -> Response:
     return jsonify({"id": user.id, "username": user.username, "email": user.email})
 
 
-# ADD A NEW RECIPE
+# Funktion zum Hinzufügen eines neuen Rezepts
 @app.route("/add_recipe", methods=["GET", "POST"])
 @login_required
 def add_recipe() -> Response:
