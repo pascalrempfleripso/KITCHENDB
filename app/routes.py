@@ -177,6 +177,9 @@ def handle_recipe_actions() -> Response:  # noqa: C901
                 Instruction.query.filter_by(recipe_id=recipe_id).delete()
                 # Delete the recipe
                 db.session.delete(recipe)
+            else:
+                flash("Nur eigene Rezepte können gelöscht werden!", "error")
+                return redirect(url_for("index"))
         db.session.commit()
         flash("Ausgewählte Rezepte wurden erfolgreich gelöscht.", "success")
 
