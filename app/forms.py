@@ -25,6 +25,10 @@ class RegisterForm(FlaskForm):
 class TaskForm(FlaskForm):
     task = StringField("Arbeitsschritt", validators=[DataRequired()])
 
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("csrf_enabled", False)  # Disable CSRF for this form
+        super().__init__(*args, **kwargs)
+
 
 # Formular für das Hinzufügen neuer Rezepte
 class RecipeForm(FlaskForm):
