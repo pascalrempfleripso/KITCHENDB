@@ -38,7 +38,7 @@
     <h2>Arbeitsschritte</h2>
     <div id="tasks">
         {% for task in form.tasks %}
-        <div class="task">
+        <div class="task" data-task-id="{{ forloop.counter0 }}">
             <p>{{ task.task.label }}<br> {{ task.task }}<br></p>
         </div>
         {% endfor %}
@@ -50,7 +50,20 @@
 <!-- JavaScript for dynamic task addition -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let taskCounter = {{ form.tasks|length }};  // Number of tasks initially rendered
+        // Array to hold tasks
+        let tasks = [];
+        
+        // Initialize tasks from existing form data
+        document.querySelectorAll('#tasks .task').forEach((taskElement, index) => {
+            const taskId = taskElement.dataset.taskId;
+            const taskInput = taskElement.querySelector('input');
+            tasks.push({
+                id: taskId,
+                value: taskInput ? taskInput.value : ''
+            });
+        });
+
+        let taskCounter = tasks.length;  // Number of tasks initially rendered
 
         // Add more tasks dynamically
         document.getElementById("add-task").addEventListener("click", function () {
@@ -60,6 +73,7 @@
             // Create a new div for the new task
             let newTaskDiv = document.createElement("div");
             newTaskDiv.classList.add("task");
+            newTaskDiv.setAttribute("data-task-id", taskCounter);  // Set unique task ID
 
             // Create a label for the task
             let newLabel = document.createElement("label");
@@ -80,9 +94,28 @@
             // Append the new task div to the task container
             taskContainer.appendChild(newTaskDiv);
 
+            // Add new task to the tasks array
+            tasks.push({
+                id: taskCounter,
+                value: ''
+            });
+
             // Increment taskCounter to ensure unique IDs and names for the next task
             taskCounter += 1;
         });
+
+        // Function to update the tasks array
+        function updateTasksArray() {
+            tasks = [];
+            document.querySelectorAll('#tasks .task').forEach((taskElement) => {
+                const taskId = taskElement.dataset.taskId;
+                const taskInput = taskElement.querySelector('input');
+                tasks.push({
+                    id: taskId,
+                    value: taskInput ? taskInput.value : ''
+                });
+            });
+        }
     });
 </script>
 

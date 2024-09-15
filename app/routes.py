@@ -98,14 +98,13 @@ def add_recipe() -> Response:
         db.session.flush()  # Damit wird die recipe.id erstellt
         ingredients = Ingredients(recipe_id=recipe.id, name=form.ingredient1.data, amount=form.ingredient1_amount.data, unit=form.ingredient1_unit.data)
         db.session.add(ingredients)
-        # tasks = Instruction(recipe_id=recipe.id, tasks=form.task1.data)
-        # db.session.add(tasks)
-        # Loop zur Ermöglichung von mehreren Arbeitsschritten pro Rezept
-        for task_form in form.tasks.data:
-            # task_form should be a dictionary with a 'task' key
-            if "task" in task_form:
-                task = Instruction(recipe_id=recipe.id, tasks=task_form["task"])  # noqa: Q000
-                db.session.add(task)
+        # Add instructions
+        # Assuming 'tasks' is a list of dictionaries with 'task' key
+        task_data = form.task.data  # This should be a list of tasks from the form
+        for task in task_data:
+            if task:
+                instruction = Instruction(recipe_id=recipe.id, tasks=task)
+                db.session.add(instruction)
         db.session.commit()
         return redirect(url_for("recipe_detail", recipe_id=recipe.id))
     return render_template("add_recipe.html", form=form)
