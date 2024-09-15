@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
- <h1>Hi, {{ current_user.username }}!</h1>
- {% for post in posts %}
- <div><p>{{ post.author.username }} teilte das Rezept: <b>{{ post.body }}</b></p></div>
- {% endfor %}
- {% endblock %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+    {% for post in posts %}
+    <div><p>{{ post.author.username }} teilte das Rezept: <b>{{ post.body }}</b></p></div>
+    {% endfor %}
+    
+    
+    <h1>Alle Rezepte:</h1>
+    <!-- Loop through each recipe -->
+    {% for recipe in recipes %}
+    <li>
+        <strong>{{ recipe.name }}</strong><br>
+    </li>
+    {% else %}
+    <li>No recipes found.</li>
+    {% endfor %}
+{% endblock %}
