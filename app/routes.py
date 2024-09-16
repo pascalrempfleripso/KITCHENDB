@@ -14,7 +14,7 @@ from app.models import Ingredients, Instruction, Recipe, User, create_user
 
 # Startseite / Index
 @app.route("/")
-@app.route("/index")
+@app.route("/index", methods=["GET", "POST"])
 @login_required
 def index() -> Response:
     if request.method == "POST":

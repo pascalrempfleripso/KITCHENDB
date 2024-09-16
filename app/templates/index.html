@@ -3,9 +3,9 @@
     <h1>Hallo {{ current_user.username }}!</h1>
     <h1>Alle Rezepte:</h1>
 
-    <!-- Form for selecting recipes and triggering actions -->
+    <!-- Formular zur Anzeige aller Rezepte  -->
     <form id="recipe-form" method="POST" action="{{ url_for('index') }}">
-        <!-- Loop to display all recipes with checkboxes -->
+        <!-- Loop zur Anzeige aller Rezepte -->
         <ul>
         {% for recipe in recipes %}
         <li>
@@ -19,7 +19,7 @@
         {% endfor %}
         </ul>
 
-        <!-- Buttons for actions -->
+        <!-- Buttons für Aktionen -->
         <button type="submit" name="action" value="delete" class="btn btn-danger">Ausgewählte Rezepte löschen</button>
         <button type="submit" name="action" value="export_ingredients" class="btn btn-primary">Zutaten exportieren</button>
         <button type="submit" name="action" value="show_my_recipes" class="btn btn-info">Meine Rezepte anzeigen</button>
