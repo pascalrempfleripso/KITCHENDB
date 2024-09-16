@@ -17,8 +17,8 @@ from app.models import Ingredients, Instruction, Recipe, User, create_user
 @app.route("/index")
 @login_required
 def index() -> Response:
-    # Ausgabe aller Rezepte:
-    recipes = Recipe.query.all()
+    # Ausgabe aller Rezepte des Users:
+    recipes = Recipe.query.filter_by(author_id=current_user.id).all()
     return render_template("index.html", title="Home", recipes=recipes)
 
 

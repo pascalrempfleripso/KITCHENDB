@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <h1>Hallo {{ current_user.username }}!</h1>
-    <h1>Alle Rezepte:</h1>
+    <h1>Deine Rezepte:</h1>
 
     <!-- Form for selecting recipes and triggering actions -->
     <form id="recipe-form" method="POST" action="{{ url_for('handle_recipe_actions') }}">
