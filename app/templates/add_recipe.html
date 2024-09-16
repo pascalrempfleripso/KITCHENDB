@@ -66,21 +66,19 @@
         var ingredientHtml = `
             <div>
                 <p>
-                    <label for="ingredients-${index}-ingredient">Zutat ${index + 1}</label><br>
-                    <input type="text" name="ingredients-${index}-ingredient" id="ingredients-${index}-ingredient" required><br>
-                </p>
-                <p>
-                    <label for="ingredients-${index}-amount">Menge ${index + 1}</label><br>
-                    <input type="number" name="ingredients-${index}-amount" id="ingredients-${index}-amount" required><br>
-                </p>
-                <p>
-                    <label for="ingredients-${index}-unit">Masseinheit ${index + 1}</label><br>
+                    <label for="ingredients-${index}-ingredient">Zutat</label>
+                    <input type="text" name="ingredients-${index}-ingredient" id="ingredients-${index}-ingredient" required>
+                    <label for="ingredients-${index}-amount">Menge</label>
+                    <input type="number" name="ingredients-${index}-amount" id="ingredients-${index}-amount" required>
+                    <label for="ingredients-${index}-unit">Masseinheit</label>
                     <select name="ingredients-${index}-unit" id="ingredients-${index}-unit" required>
                         <option value="mg">mg</option>
                         <option value="g">g</option>
                         <option value="kg">kg</option>
                         <option value="ml">ml</option>
                         <option value="l">l</option>
+                        <option value="TL">TL</option>
+                        <option value="EL">EL</option>
                         <option value="stk">stk</option>
                     </select><br>
                 </p>
