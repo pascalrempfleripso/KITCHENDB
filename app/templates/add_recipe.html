@@ -24,15 +24,12 @@
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             
-            
                 {{ ingredient_form.amount.label }}
                 {{ ingredient_form.amount }}
                 {% for error in ingredient_form.amount.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             
-            
-                {{ ingredient_form.unit.label }}
                 {{ ingredient_form.unit }}
                 {% for error in ingredient_form.unit.errors %}
                 <span style="color: red;">[{{ error }}]</span>
@@ -70,7 +67,6 @@
                     <input type="text" name="ingredients-${index}-ingredient" id="ingredients-${index}-ingredient" required>
                     <label for="ingredients-${index}-amount">Menge</label>
                     <input type="number" name="ingredients-${index}-amount" id="ingredients-${index}-amount" required>
-                    <label for="ingredients-${index}-unit">Masseinheit</label>
                     <select name="ingredients-${index}-unit" id="ingredients-${index}-unit" required>
                         <option value="mg">mg</option>
                         <option value="g">g</option>
