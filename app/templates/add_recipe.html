@@ -18,22 +18,22 @@
         {% for ingredient_form in form.ingredients %}
         <div>
             <p>
-                {{ ingredient_form.ingredient.label }}<br>
-                {{ ingredient_form.ingredient }}<br>
+                {{ ingredient_form.ingredient.label }}
+                {{ ingredient_form.ingredient }}
                 {% for error in ingredient_form.ingredient.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             
             
-                {{ ingredient_form.amount.label }}<br>
-                {{ ingredient_form.amount }}<br>
+                {{ ingredient_form.amount.label }}
+                {{ ingredient_form.amount }}
                 {% for error in ingredient_form.amount.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             
             
-                {{ ingredient_form.unit.label }}<br>
-                {{ ingredient_form.unit }}<br>
+                {{ ingredient_form.unit.label }}
+                {{ ingredient_form.unit }}
                 {% for error in ingredient_form.unit.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
