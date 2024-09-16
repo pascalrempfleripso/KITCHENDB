@@ -21,7 +21,7 @@ def index() -> Response:
         # Check if the 'show_my_recipes' button was clicked
         if request.form.get("action") == "show_my_recipes":
             # Filter recipes by the current user
-            recipes = Recipe.query.filter_by(user_id=current_user.id).all()
+            recipes = Recipe.query.filter_by(author_id=current_user.id).all()
         else:
             # Default: show all recipes
             recipes = Recipe.query.all()
