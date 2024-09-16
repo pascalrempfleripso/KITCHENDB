@@ -5,6 +5,10 @@
 
     <!-- Formular zur Anzeige aller Rezepte  -->
     <form id="recipe-form" method="POST" action="{{ url_for('index') }}">
+        <!-- Buttons für Aktionen -->
+        <button type="submit" name="action" value="delete" class="btn btn-danger">Ausgewählte Rezepte löschen</button>
+        <button type="submit" name="action" value="export_ingredients" class="btn btn-primary">Zutaten exportieren</button>
+        <button type="submit" name="action" value="show_my_recipes" class="btn btn-info">Meine Rezepte anzeigen</button>
         <!-- Loop zur Anzeige aller Rezepte -->
         <ul>
         {% for recipe in recipes %}
@@ -18,10 +22,5 @@
         <p>Keine Rezepte bis jetzt? <a href="{{ url_for('add_recipe') }}">Hier welche Hinzufügen!</a></p>
         {% endfor %}
         </ul>
-
-        <!-- Buttons für Aktionen -->
-        <button type="submit" name="action" value="delete" class="btn btn-danger">Ausgewählte Rezepte löschen</button>
-        <button type="submit" name="action" value="export_ingredients" class="btn btn-primary">Zutaten exportieren</button>
-        <button type="submit" name="action" value="show_my_recipes" class="btn btn-info">Meine Rezepte anzeigen</button>
     </form>
 {% endblock %}
