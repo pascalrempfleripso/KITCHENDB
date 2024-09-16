@@ -158,7 +158,7 @@ def export_recipe(recipe_id: int) -> Response:
 @app.route("/handle_recipe_actions", methods=["POST"])
 @login_required
 def handle_recipe_actions() -> Response:  # noqa: C901
-    # Get selected recipe IDs from the form
+    # Get alle IDs der selektierten Rezepte
     selected_recipes = request.form.getlist("selected_recipes")
 
     if not selected_recipes:
@@ -168,14 +168,14 @@ def handle_recipe_actions() -> Response:  # noqa: C901
     action = request.form.get("action")
 
     if action == "delete":
-        # Delete selected recipes, ingredients, and instructions
+        # Ausgewählte Rezepte und dazugehörige Zutaten und Arbeitsschritte löschen
         for recipe_id in selected_recipes:
             recipe = Recipe.query.get(recipe_id)
             if recipe and recipe.author_id == current_user.id:
-                # Delete related ingredients and instructions
+                # ingredients and instructions löschen
                 Ingredients.query.filter_by(recipe_id=recipe_id).delete()
                 Instruction.query.filter_by(recipe_id=recipe_id).delete()
-                # Delete the recipe
+                # recipe löschen
                 db.session.delete(recipe)
             else:
                 flash("Nur eigene Rezepte können gelöscht werden!", "error")
@@ -184,7 +184,7 @@ def handle_recipe_actions() -> Response:  # noqa: C901
         flash("Ausgewählte Rezepte wurden erfolgreich gelöscht.", "success")
 
     elif action == "export_ingredients":
-        # Aggregate ingredients across selected recipes
+        # Zutaten sammeln
         ingredient_totals = defaultdict(lambda: {"amount": 0, "unit": None})
 
         for recipe_id in selected_recipes:
@@ -194,15 +194,15 @@ def handle_recipe_actions() -> Response:  # noqa: C901
                     name = ingredient.name
                     if ingredient_totals[name]["unit"] is None:
                         ingredient_totals[name]["unit"] = ingredient.unit
-                    # Assuming units are the same; summing up amounts
+                    # Wenn die Zutaten identisch heissen = summieren
                     ingredient_totals[name]["amount"] += ingredient.amount
 
-        # Generate the content for the export file
+        # File-Export erstellen
         ingredients_text = "Zusammengefasste Zutaten:\n"
         for name, info in ingredient_totals.items():
             ingredients_text += f"- {info['amount']} {info['unit']} {name}\n"
 
-        # Create a response with the .txt file content
+        # Response mit .txt-File
         response = make_response(ingredients_text)
         response.headers["Content-Disposition"] = "attachment; filename=combined_ingredients.txt"
         response.headers["Content-Type"] = "text/plain"
