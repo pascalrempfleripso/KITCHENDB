@@ -17,8 +17,18 @@ from app.models import Ingredients, Instruction, Recipe, User, create_user
 @app.route("/index")
 @login_required
 def index() -> Response:
-    # Ausgabe aller Rezepte:
-    recipes = Recipe.query.all()
+    if request.method == "POST":
+        # Check if the 'show_my_recipes' button was clicked
+        if request.form.get("action") == "show_my_recipes":
+            # Filter recipes by the current user
+            recipes = Recipe.query.filter_by(user_id=current_user.id).all()
+        else:
+            # Default: show all recipes
+            recipes = Recipe.query.all()
+    else:
+        # Default: show all recipes
+        recipes = Recipe.query.all()
+
     return render_template("index.html", title="Home", recipes=recipes)
 
 
