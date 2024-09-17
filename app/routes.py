@@ -81,13 +81,6 @@ def post_users() -> Response:
     return jsonify({"message": "User created successfully"}), 201
 
 
-# PATCH/MODIFY USER USING REST-API
-@app.route("/users/<int:user_id>", methods=["PATCH"])
-def patch_user(user_id: int) -> Response:
-    user = User.query.get_or_404(user_id)
-    return jsonify({"id": user.id, "username": user.username, "email": user.email})
-
-
 # Funktion zum Hinzufügen eines neuen Rezepts
 @app.route("/add_recipe", methods=["GET", "POST"])
 @login_required
