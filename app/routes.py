@@ -59,28 +59,6 @@ def register() -> Response:
     return render_template("register.html", title="Register", form=form)
 
 
-# REST-API Funktionen
-# GET ALL USERS
-@app.route("/users", methods=["GET"])
-def get_users() -> Response:
-    return jsonify([{"id": user.id, "username": user.username, "email": user.email} for user in User.query.all()])
-
-
-# GET SPECIFIC USER
-@app.route("/users/<int:user_id>", methods=["GET"])
-def get_user(user_id: int) -> Response:
-    user = User.query.get_or_404(user_id)
-    return jsonify({"id": user.id, "username": user.username, "email": user.email})
-
-
-# POST/CREATE NEW USER USING REST-API
-@app.route("/users", methods=["POST"])
-def post_users() -> Response:
-    data = request.get_json()
-    create_user(username=data["username"], email=data["email"], password=data["password"])
-    return jsonify({"message": "User created successfully"}), 201
-
-
 # Funktion zum Hinzufügen eines neuen Rezepts
 @app.route("/add_recipe", methods=["GET", "POST"])
 @login_required
@@ -202,3 +180,61 @@ def handle_recipe_actions() -> Response:  # noqa: C901
         return response
 
     return redirect(url_for("index"))
+
+
+# REST-API Funktionen
+# GET - ALLE USER
+@app.route("/users", methods=["GET"])
+def get_users() -> Response:
+    return jsonify([{"id": user.id, "username": user.username, "email": user.email} for user in User.query.all()])
+
+
+# GET - EIN USER
+@app.route("/users/<int:user_id>", methods=["GET"])
+def get_user(user_id: int) -> Response:
+    user = User.query.get_or_404(user_id)
+    return jsonify({"id": user.id, "username": user.username, "email": user.email})
+
+
+# POST/CREATE - NEUER USER ÜBER REST-API
+@app.route("/users", methods=["POST"])
+def post_users() -> Response:
+    data = request.get_json()
+    create_user(username=data["username"], email=data["email"], password=data["password"])
+    return jsonify({"message": "User created successfully"}), 201
+
+
+# GET - ALLE REZEPTE EINES USERS
+@app.route("/users/<int:user_id>/recipes", methods=["GET"])
+def get_user_recipes(user_id: int) -> Response:
+    # QUERY NACH USER - UM SICHERZUSTELLER, DASS DIESER EXISTIERT
+    user = User.query.get_or_404(user_id)
+
+    # QUERY NACH ALLEN REZEPTEN DES USERS
+    recipes = Recipe.query.filter_by(author_id=user_id).all()
+
+    # AUSGABE DER REZEPTE IN JSON
+    return jsonify([{"id": recipe.id, "name": recipe.name, "author_id": recipe.author_id} for recipe in recipes])
+
+
+# GET - EIN SPEZIFISCHE REZEPT VIA REZEPT-ID
+@app.route("/recipes/<int:recipe_id>", methods=["GET"])
+def get_recipe(recipe_id: int) -> Response:
+    # QUERY NACH DEM REZEPT
+    recipe = Recipe.query.get_or_404(recipe_id)
+
+    # ALLE ZUTATEN UND ARBEITSSCHRITTE
+    ingredients = recipe.ingredients.all()
+    instructions = recipe.instructions.all()
+
+    # REZEPT IN JSON
+    recipe_data = {
+        "id": recipe.id,
+        "name": recipe.name,
+        "author_id": recipe.author_id,
+        "author": recipe.author.username,
+        "ingredients": [{"id": ingredient.id, "name": ingredient.name, "amount": ingredient.amount, "unit": ingredient.unit} for ingredient in ingredients],
+        "instructions": [{"id": instruction.id, "task": instruction.tasks} for instruction in instructions],
+    }
+
+    return jsonify(recipe_data)
